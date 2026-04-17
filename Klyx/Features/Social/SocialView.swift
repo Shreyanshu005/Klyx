@@ -32,6 +32,8 @@ struct SocialView: View {
                                     Text("LEADERBOARD")
                                         .clash(size: 38, weight: .bold)
                                         .foregroundStyle(.white)
+                                        .minimumScaleFactor(0.5)
+                                        .lineLimit(1)
                                 }
                                 Spacer()
                                 Button {
@@ -66,7 +68,7 @@ struct SocialView: View {
                                     ProgressView()
                                         .tint(AppColors.boxYellow)
                                         .scaleEffect(1.8)
-                                    Text("FETCHING LIVE SCORES")
+                                    Text("FETCHING LIVE STATS")
                                         .clash(size: 14, weight: .bold)
                                         .foregroundStyle(.white.opacity(0.5))
                                         .tracking(1)
@@ -77,7 +79,7 @@ struct SocialView: View {
                         } else {
                             // Leaderboard Feed
                             ForEach(viewModel.leaderboard) { entry in
-                                NavigationLink(destination: FriendDetailView(friend: entry.alias, score: entry.devScore)) {
+                                NavigationLink(destination: FriendDetailView(friend: entry.alias, stats: entry.stats)) {
                                     BentoCard(backgroundColor: entry.rank == 1 ? AppColors.boxYellow : AppColors.cardBackground, cornerRadius: 28) {
                                         HStack(spacing: 16) {
                                             Text("#\(entry.rank)")
@@ -93,14 +95,14 @@ struct SocialView: View {
                                                     .lineLimit(1)
                                                     .minimumScaleFactor(0.5)
                                                 
-                                                Text(entry.devScore.tier.uppercased())
+                                                Text("SOLVED")
                                                     .clash(size: 12, weight: .bold)
                                                     .foregroundStyle(entry.rank == 1 ? .black.opacity(0.6) : AppColors.boxGreen)
                                             }
 
                                             Spacer()
 
-                                            Text("\(entry.devScore.compositeScore)")
+                                            Text("\(entry.stats.totalCompetitiveSolved)")
                                                 .clash(size: 48, weight: .bold)
                                                 .foregroundStyle(entry.rank == 1 ? .black : .white)
                                                 .tracking(-3)

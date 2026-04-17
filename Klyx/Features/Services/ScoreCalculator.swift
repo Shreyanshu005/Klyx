@@ -34,7 +34,7 @@ final class ScoreCalculator {
         ghUsername: String?,
         ghToken: String?,
         cfHandle: String?
-    ) async -> DevScore {
+    ) async -> AggregatedStats {
         async let lcData = fetchLeetCode(username: lcUsername)
         async let ghData = fetchGitHub(username: ghUsername, token: ghToken)
         async let cfData = fetchCodeforces(handle: cfHandle)
@@ -43,7 +43,7 @@ final class ScoreCalculator {
         let gh = await ghData
         let cf = await cfData
 
-        let score = DevScore(
+        let stats = AggregatedStats(
             lastUpdated: .now,
             lcRanking: lc.ranking,
             lcEasySolved: lc.easy,
@@ -66,12 +66,12 @@ final class ScoreCalculator {
         )
 
         // Persist for widget access
-        cache.persistCodable(score, forKey: CacheManager.Keys.devScore)
+        cache.persistCodable(stats, forKey: CacheManager.Keys.aggregatedStats)
 
         // Tell widgets to refresh immediately
         WidgetCenter.shared.reloadAllTimelines()
 
-        return score
+        return stats
     }
 
     // MARK: - Private Fetchers
@@ -105,11 +105,42 @@ final class ScoreCalculator {
             // Persist the heatmap calendar explicitly for widget access
             let calendar = try await lcService.fetchSubmissionCalendar(username: username)
             cache.persistCodable(calendar, forKey: CacheManager.Keys.lcProfile)
+            
+            // Calculate Current Streak
+            metrics.streak = calculateStreak(from: calendar)
         } catch {
-            print("[ScoreCalculator] LC fetch error: \(error.localizedDescription)")
+            // Silencing LC fetch error for production
         }
 
         return metrics
+    }
+
+    private func calculateStreak(from calendar: [String: Int]) -> Int {
+        let sortedDates = calendar.keys.sorted(by: >)
+        var streak = 0
+        let today = Date.now.isoDateString
+        let calendarRef = Calendar.current
+        guard let yesterday = calendarRef.date(byAdding: .day, value: -1, to: .now)?.isoDateString else { return 0 }
+        
+        // If no submission today or yesterday, streak is zero
+        if (calendar[today] ?? 0) == 0 && (calendar[yesterday] ?? 0) == 0 {
+            return 0
+        }
+        
+        var checkDate = (calendar[today] ?? 0) > 0 ? Date.now : calendarRef.date(byAdding: .day, value: -1, to: .now)!
+        
+        while true {
+            let key = checkDate.isoDateString
+            if (calendar[key] ?? 0) > 0 {
+                streak += 1
+                guard let nextDate = calendarRef.date(byAdding: .day, value: -1, to: checkDate) else { break }
+                checkDate = nextDate
+            } else {
+                break
+            }
+        }
+        
+        return streak
     }
 
     private struct GHMetrics {
@@ -147,7 +178,7 @@ final class ScoreCalculator {
             let repos = try await ghService.fetchRepos(username: username)
             metrics.stars = repos.reduce(0) { $0 + $1.stargazersCount }
         } catch {
-            print("[ScoreCalculator] GH fetch error: \(error.localizedDescription)")
+            // Silencing GH fetch error for production
         }
 
         return metrics
@@ -175,7 +206,7 @@ final class ScoreCalculator {
             let uniqueSolved = Set(submissions.filter { $0.isAccepted }.map { $0.problem.displayName })
             metrics.solved = uniqueSolved.count
         } catch {
-            print("[ScoreCalculator] CF fetch error: \(error.localizedDescription)")
+            // Silencing CF fetch error for production
         }
 
         return metrics

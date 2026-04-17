@@ -125,14 +125,14 @@ struct GitHubView: View {
                 VStack(alignment: .leading, spacing: 2) {
                     Text((profile.name ?? profile.login).uppercased())
                         .clash(size: 28, weight: .bold)
-                        .foregroundStyle(.black)
+                        .foregroundStyle(.white)
                         .lineLimit(1)
                         .minimumScaleFactor(0.5)
 
                     if let bio = profile.bio, !bio.isEmpty {
                         Text(bio.uppercased())
                             .clash(size: 12, weight: .bold)
-                            .foregroundStyle(.black.opacity(0.7))
+                            .foregroundStyle(.white.opacity(0.8))
                             .lineLimit(2)
                     }
 
@@ -142,7 +142,7 @@ struct GitHubView: View {
                         Label("\(viewModel.totalStars)", systemImage: "star.fill")
                     }
                     .clash(size: 14, weight: .bold)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.white)
                     .padding(.top, 4)
                 }
                 Spacer(minLength: 0)
@@ -223,7 +223,7 @@ struct GitHubView: View {
                             if let lang = repo.language {
                                 Text(lang.uppercased())
                                     .clash(size: 10, weight: .bold)
-                                    .foregroundStyle(.black)
+                                    .foregroundStyle(.white)
                                     .padding(.horizontal, 6)
                                     .padding(.vertical, 2)
                                     .background(AppColors.boxGreen, in: Capsule())

@@ -12,7 +12,7 @@ import Observation
 /// platform summaries, and streak info at a glance.
 @Observable
 final class DashboardViewModel {
-    var devScore: DevScore = .empty
+    var aggregatedStats: AggregatedStats?
     var isLoading = false
     var errorMessage: String?
     var lastSyncText: String = "Never synced"
@@ -34,9 +34,9 @@ final class DashboardViewModel {
             cache: cache
         )
 
-        // Load cached score immediately for instant UI
-        if let cached = cache.loadCodable(DevScore.self, forKey: CacheManager.Keys.devScore) {
-            self.devScore = cached
+        // Load cached stats immediately for instant UI
+        if let cached = cache.loadCodable(AggregatedStats.self, forKey: CacheManager.Keys.aggregatedStats) {
+            self.aggregatedStats = cached
             self.lastSyncText = cached.lastUpdated.timeAgo
         }
     }
@@ -53,15 +53,15 @@ final class DashboardViewModel {
         isLoading = true
         errorMessage = nil
 
-        let score = await scoreCalculator.computeScore(
+        let stats = await scoreCalculator.computeScore(
             lcUsername: lcUsername,
             ghUsername: ghUsername,
             ghToken: ghToken,
             cfHandle: cfHandle
         )
 
-        devScore = score
-        lastSyncText = score.lastUpdated.timeAgo
+        aggregatedStats = stats
+        lastSyncText = stats.lastUpdated.timeAgo
         isLoading = false
     }
 }

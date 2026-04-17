@@ -14,6 +14,22 @@ struct KlyxApp: App {
     let modelContainer: ModelContainer
 
     init() {
+        // Register ALL custom .otf fonts dynamically bypassing Info.plist / .xcassets compile limits
+        if let urls = Bundle.main.urls(forResourcesWithExtension: "otf", subdirectory: nil) {
+            for url in urls {
+                var error: Unmanaged<CFError>?
+                CTFontManagerRegisterFontsForURL(url as CFURL, .process, &error)
+            }
+        } else {
+            // Fallback for nested directories in newer Xcode project formats
+            if let urls = Bundle.main.urls(forResourcesWithExtension: "otf", subdirectory: "Fonts") {
+                for url in urls {
+                    var error: Unmanaged<CFError>?
+                    CTFontManagerRegisterFontsForURL(url as CFURL, .process, &error)
+                }
+            }
+        }
+
         do {
             modelContainer = try DataStoreConfig.makeContainer()
         } catch {
@@ -24,18 +40,8 @@ struct KlyxApp: App {
     var body: some Scene {
         WindowGroup {
             RootView()
-                .preferredColorScheme(colorScheme)
+                .preferredColorScheme(.dark)
         }
         .modelContainer(modelContainer)
-    }
-
-    /// Reads the user's appearance preference.
-    private var colorScheme: ColorScheme? {
-        let raw = UserDefaults.standard.string(forKey: "appearance") ?? "system"
-        switch raw {
-        case "light": return .light
-        case "dark": return .dark
-        default: return nil
-        }
     }
 }

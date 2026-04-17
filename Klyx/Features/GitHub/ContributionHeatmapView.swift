@@ -16,59 +16,44 @@ struct ContributionHeatmapView: View {
     private let dayLabels = ["", "Mon", "", "Wed", "", "Fri", ""]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text("Contributions")
-                .font(.headline)
-
-            Text("\(calendar.totalContributions) contributions in the last year")
-                .font(.caption)
-                .foregroundStyle(.secondary)
-
+        VStack(alignment: .leading, spacing: 12) {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(alignment: .top, spacing: cellSpacing) {
-                    // Day labels column
-                    VStack(spacing: cellSpacing) {
-                        ForEach(dayLabels, id: \.self) { label in
-                            Text(label)
-                                .font(.system(size: 8))
-                                .foregroundStyle(.secondary)
-                                .frame(width: 24, height: cellSize)
-                        }
-                    }
-
                     // Weeks
                     ForEach(Array(calendar.weeks.enumerated()), id: \.offset) { _, week in
                         VStack(spacing: cellSpacing) {
                             ForEach(week.contributionDays) { day in
                                 RoundedRectangle(cornerRadius: 2)
-                                    .fill(Color(hex: day.color))
+                                    .fill(colorFor(day.contributionCount))
                                     .frame(width: cellSize, height: cellSize)
-                                    .help("\(day.date): \(day.contributionCount) contributions")
                             }
                         }
                     }
                 }
             }
 
-            // Legend
-            HStack(spacing: 4) {
+            HStack {
+                Text("\(calendar.totalContributions) CONTRIBUTIONS")
+                    .clash(size: 10, weight: .bold)
+                    .foregroundStyle(.white.opacity(0.6))
                 Spacer()
-                Text("Less")
-                    .font(.system(size: 9))
-                    .foregroundStyle(.secondary)
-
-                ForEach(["#ebedf0", "#9be9a8", "#40c463", "#30a14e", "#216e39"], id: \.self) { hex in
-                    RoundedRectangle(cornerRadius: 2)
-                        .fill(Color(hex: hex))
-                        .frame(width: 10, height: 10)
+                // Legend
+                HStack(spacing: 4) {
+                    ForEach([0.1, 0.4, 0.7, 1.0], id: \.self) { opacity in
+                        RoundedRectangle(cornerRadius: 2)
+                            .fill(AppColors.boxGreen.opacity(opacity))
+                            .frame(width: 8, height: 8)
+                    }
                 }
-
-                Text("More")
-                    .font(.system(size: 9))
-                    .foregroundStyle(.secondary)
             }
         }
-        .padding()
-        .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 16))
+    }
+
+    private func colorFor(_ count: Int) -> Color {
+        if count == 0 { return Color.black }
+        if count < 3 { return AppColors.boxGreen.opacity(0.3) }
+        if count < 6 { return AppColors.boxGreen.opacity(0.6) }
+        if count < 9 { return AppColors.boxGreen.opacity(0.8) }
+        return AppColors.boxGreen
     }
 }

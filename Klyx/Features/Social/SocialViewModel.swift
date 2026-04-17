@@ -23,14 +23,14 @@ final class SocialViewModel {
     struct FriendEntry: Identifiable {
         let id = UUID()
         let profile: FriendProfile
-        let devScore: DevScore
+        let stats: AggregatedStats
     }
 
     struct LeaderboardEntry: Identifiable {
         let id = UUID()
         let rank: Int
         let alias: String
-        let devScore: DevScore
+        let stats: AggregatedStats
     }
 
     // MARK: - Actions
@@ -54,14 +54,14 @@ final class SocialViewModel {
                         cfService: CodeforcesService()
                     )
 
-                    let score = await calc.computeScore(
+                    let stats = await calc.computeScore(
                         lcUsername: profile.leetcodeUsername,
                         ghUsername: profile.githubUsername,
                         ghToken: token,
                         cfHandle: profile.codeforcesHandle
                     )
 
-                    return FriendEntry(profile: profile, devScore: score)
+                    return FriendEntry(profile: profile, stats: stats)
                 }
             }
 
@@ -72,15 +72,15 @@ final class SocialViewModel {
             }
         }
 
-        // Generate Leaderboard
+        // Generate Leaderboard Sorted tightly by Total Competitive Solved
         leaderboard = friends
-            .sorted { $0.devScore.compositeScore > $1.devScore.compositeScore }
+            .sorted { $0.stats.totalCompetitiveSolved > $1.stats.totalCompetitiveSolved }
             .enumerated()
             .map { index, friend in
                 LeaderboardEntry(
                     rank: index + 1,
                     alias: friend.profile.alias,
-                    devScore: friend.devScore
+                    stats: friend.stats
                 )
             }
 

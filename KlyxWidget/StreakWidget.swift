@@ -30,7 +30,7 @@ struct StreakWidgetProvider: TimelineProvider {
     private func loadEntry() -> StreakWidgetEntry {
         let defaults = UserDefaults(suiteName: "group.com.shreyanshu.klyx") ?? .standard
 
-        if let data = defaults.data(forKey: "cached_dev_score"),
+        if let data = defaults.data(forKey: "cached_aggregated_stats"),
            let score = try? JSONDecoder().decode(WidgetStreakData.self, from: data) {
             return StreakWidgetEntry(
                 date: .now,
@@ -60,7 +60,7 @@ struct StreakWidgetEntry: TimelineEntry {
     let longestStreak: Int
 }
 
-private let boxRed = Color(red: 1.0, green: 0.13, blue: 0.13)
+private let boxRed = Color(red: 245/255.0, green: 25/255.0, blue: 29/255.0)
 
 // MARK: - Small Widget View
 
@@ -70,24 +70,24 @@ struct StreakWidgetSmallView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             Text("STREAK")
-                .font(.custom("ClashDisplay-Bold", size: 10))
+                .clash(size: 10, weight: .bold)
                 .foregroundStyle(.white.opacity(0.6))
                 .tracking(1)
             
             Text("\(max(entry.ghStreak, entry.lcStreak))")
-                .font(.custom("ClashDisplay-Bold", size: 54))
+                .clash(size: 54, weight: .bold)
                 .foregroundStyle(.white)
                 .minimumScaleFactor(0.5)
                 .lineLimit(1)
                 .tracking(-3)
 
             Text("DAY STREAK")
-                .font(.custom("ClashDisplay-Bold", size: 12))
+                .clash(size: 12, weight: .bold)
                 .foregroundStyle(.white)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .padding()
-        .containerBackground(boxRed, for: .widget)
+        .containerBackground(AppColors.boxRed, for: .widget)
     }
 }
 
@@ -101,19 +101,19 @@ struct StreakWidgetMediumView: View {
             // Main Top Streak
             VStack(alignment: .leading, spacing: 0) {
                 Text("HOT STREAK")
-                    .font(.custom("ClashDisplay-Bold", size: 14))
+                    .clash(size: 14, weight: .bold)
                     .foregroundStyle(.white.opacity(0.8))
                     .tracking(1)
                 
                 Text("\(max(entry.ghStreak, entry.lcStreak))")
-                    .font(.custom("ClashDisplay-Bold", size: 64))
+                    .clash(size: 64, weight: .bold)
                     .foregroundStyle(.white)
                     .minimumScaleFactor(0.5)
                     .lineLimit(1)
                     .tracking(-3)
                 
                 Text("DAYS")
-                    .font(.custom("ClashDisplay-Bold", size: 16))
+                    .clash(size: 16, weight: .bold)
                     .foregroundStyle(.white)
             }
             .frame(maxWidth: .infinity, alignment: .leading)
@@ -124,17 +124,17 @@ struct StreakWidgetMediumView: View {
                 statsRow(label: "LONGEST", val: "\(entry.longestStreak)")
             }
         }
-        .padding(8)
-        .containerBackground(boxRed, for: .widget)
+        .padding(16)
+        .containerBackground(AppColors.boxRed, for: .widget)
     }
 
     private func statsRow(label: String, val: String) -> some View {
         HStack(spacing: 8) {
             Text(label)
-                .font(.custom("ClashDisplay-Bold", size: 12))
+                .clash(size: 12, weight: .bold)
                 .foregroundStyle(.white.opacity(0.8))
             Text(val)
-                .font(.custom("ClashDisplay-Bold", size: 18))
+                .clash(size: 18, weight: .bold)
                 .foregroundStyle(.white)
                 .frame(width: 30, alignment: .trailing)
         }

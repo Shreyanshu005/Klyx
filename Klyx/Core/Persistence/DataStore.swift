@@ -35,13 +35,13 @@ final class UserProfile {
 
     // MARK: - Convenience
 
-    var cachedScore: DevScore? {
+    var cachedStats: AggregatedStats? {
         guard let data = cachedScoreJSON else { return nil }
-        return try? JSONDecoder().decode(DevScore.self, from: data)
+        return try? JSONDecoder().decode(AggregatedStats.self, from: data)
     }
 
-    func updateScore(_ score: DevScore) {
-        cachedScoreJSON = try? JSONEncoder().encode(score)
+    func updateScore(_ stats: AggregatedStats) {
+        cachedScoreJSON = try? JSONEncoder().encode(stats)
         lastSyncDate = .now
     }
 }

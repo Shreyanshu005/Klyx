@@ -66,29 +66,43 @@ final class GitHubService: GitHubServiceProtocol {
 
     func fetchStreaks(username: String, token: String) async throws -> (current: Int, longest: Int) {
         let calendar = try await fetchContributions(username: username, token: token)
-
-        let allDays = calendar.weeks.flatMap { $0.contributionDays }
-        var currentStreak = 0
-        var longestStreak = 0
-        var tempStreak = 0
-
-        // Walk backwards from today to compute streaks
-        for day in allDays.reversed() {
+        let days = calendar.weeks.flatMap { $0.contributionDays }
+        let dict = Dictionary(uniqueKeysWithValues: days.map { ($0.date, $0.contributionCount) })
+        
+        // 1. Longest Streak (anywhere in history)
+        var longest = 0
+        var temp = 0
+        for day in days {
             if day.contributionCount > 0 {
-                tempStreak += 1
-                longestStreak = max(longestStreak, tempStreak)
-                if currentStreak == 0 || currentStreak == tempStreak - 1 {
-                    currentStreak = tempStreak
-                }
+                temp += 1
+                longest = max(longest, temp)
             } else {
-                if currentStreak > 0 && tempStreak == currentStreak {
-                    // Current streak just ended
-                }
-                tempStreak = 0
+                temp = 0
             }
         }
-
-        return (current: currentStreak, longest: longestStreak)
+        
+        // 2. Current Streak (anchored to today/yesterday)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let today = formatter.string(from: Date())
+        let yesterday = formatter.string(from: Calendar.current.date(byAdding: .day, value: -1, to: Date())!)
+        
+        var current = 0
+        if (dict[today] ?? 0) > 0 || (dict[yesterday] ?? 0) > 0 {
+            var checkDate = (dict[today] ?? 0) > 0 ? Date() : Calendar.current.date(byAdding: .day, value: -1, to: Date())!
+            while true {
+                let key = formatter.string(from: checkDate)
+                if (dict[key] ?? 0) > 0 {
+                    current += 1
+                    guard let prev = Calendar.current.date(byAdding: .day, value: -1, to: checkDate) else { break }
+                    checkDate = prev
+                } else {
+                    break
+                }
+            }
+        }
+        
+        return (current: current, longest: longest)
     }
 }
 

@@ -67,19 +67,19 @@ struct HeatmapView: View {
         switch platform {
         case .github:
             switch count {
-            case 0: return Color(hex: "#161b22")
-            case 1...3: return Color(hex: "#0e4429")
-            case 4...6: return Color(hex: "#006d32")
-            case 7...9: return Color(hex: "#26a641")
-            default: return Color(hex: "#39d353")
+            case 0: return Color.black
+            case 1...3: return AppColors.boxGreen.opacity(0.3)
+            case 4...6: return AppColors.boxGreen.opacity(0.6)
+            case 7...9: return AppColors.boxGreen.opacity(0.8)
+            default: return AppColors.boxGreen
             }
         case .leetcode:
             switch count {
-            case 0: return Color(hex: "#2a2a2a")
-            case 1: return Color(hex: "#5a3e00")
-            case 2...3: return Color(hex: "#8a5c00")
-            case 4...5: return Color(hex: "#c78400")
-            default: return Color(hex: "#ffa116")
+            case 0: return Color.black
+            case 1: return AppColors.boxYellow.opacity(0.3)
+            case 2...3: return AppColors.boxYellow.opacity(0.6)
+            case 4...5: return AppColors.boxYellow.opacity(0.8)
+            default: return AppColors.boxYellow
             }
         }
     }

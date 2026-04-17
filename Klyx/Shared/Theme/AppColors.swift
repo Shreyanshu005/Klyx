@@ -10,19 +10,12 @@ import SwiftUI
 /// Centralized color palette for the entire app.
 /// All views reference these instead of using ad-hoc colors.
 enum AppColors {
-    // MARK: - Primary Gradient
-    // Kept for fallback, but transitioning away from gradients
-    static let primaryGradient = LinearGradient(
-        colors: [Color(hex: "#00F0FF"), Color(hex: "#B026FF")],
-        startPoint: .topLeading,
-        endPoint: .bottomTrailing
-    )
-
     // MARK: - Box Box Flat Colors
-    static let boxRed = Color(hex: "#FF2323")      // Vibrant Red
-    static let boxYellow = Color(hex: "#E0FF00")   // Neon/Electric Yellow
-    static let boxBlue = Color(hex: "#303CFF")     // Indigo/Blue
-    static let boxGreen = Color(hex: "#00D166")    // Bright Mint Green
+    static let boxRed = Color(hex: "#F5191D")
+    static let textRedShade = Color(hex: "#FE7679") // Highlight matching red tone
+    static let boxYellow = Color(hex: "#FFDA27")
+    static let boxBlue = Color(hex: "#2F1FFD")
+    static let boxGreen = Color(hex: "#02BB81")
     
     // MARK: - Background Colors
     static let pureBlack = Color(hex: "#000000")
@@ -47,23 +40,4 @@ enum AppColors {
         default:           return Color(hex: "#AA0000")
         }
     }
-
-    // MARK: - Gradients
-    static let fireGradient = LinearGradient(
-        colors: [.orange, .red],
-        startPoint: .top,
-        endPoint: .bottom
-    )
-
-    static let streakGradient = LinearGradient(
-        colors: [Color(hex: "#FF512F"), Color(hex: "#DD2476")],
-        startPoint: .leading,
-        endPoint: .trailing
-    )
-
-    static let githubGradient = LinearGradient(
-        colors: [Color(hex: "#0e4429"), Color(hex: "#39d353")],
-        startPoint: .leading,
-        endPoint: .trailing
-    )
 }

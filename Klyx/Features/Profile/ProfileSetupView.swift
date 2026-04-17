@@ -23,55 +23,53 @@ struct ProfileSetupView: View {
     private var existingProfile: UserProfile? { profiles.first }
 
     var body: some View {
-        NavigationStack {
-            Form {
-                Section {
-                    VStack(spacing: 8) {
-                        Image(systemName: "person.crop.circle.badge.checkmark")
-                            .font(.system(size: 48))
-                            .foregroundStyle(AppColors.primaryGradient)
-
-                        Text("Connect Your Platforms")
-                            .font(.title2.bold())
-
-                        Text("Link your accounts to build your unified developer profile.")
-                            .font(.caption)
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
+        ZStack {
+            AppColors.pureBlack.ignoresSafeArea()
+            
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    // MARK: - Header
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("CONNECT")
+                            .clash(size: 44, weight: .bold)
+                            .foregroundStyle(.white)
+                            .tracking(2)
+                        Text("YOUR STACK")
+                            .clash(size: 44, weight: .bold)
+                            .foregroundStyle(AppColors.boxYellow)
+                            .tracking(2)
                     }
-                    .frame(maxWidth: .infinity)
-                    .listRowBackground(Color.clear)
-                }
+                    .padding(.top, 40)
+                    .padding(.bottom, 20)
 
-                Section("LeetCode") {
-                    TextField("LeetCode Username", text: $lcUsername)
-                        .textContentType(.username)
-                        .autocorrectionDisabled()
-                        .textInputAutocapitalization(.never)
-                }
+                    // MARK: - LeetCode
+                    setupSection(title: "LEETCODE", color: AppColors.boxYellow) {
+                        VStack(spacing: 12) {
+                            brutalistTextField("Username", text: $lcUsername, icon: "person.fill")
+                        }
+                    }
 
-                Section("GitHub") {
-                    TextField("GitHub Username", text: $ghUsername)
-                        .textContentType(.username)
-                        .autocorrectionDisabled()
-                        .textInputAutocapitalization(.never)
+                    // MARK: - GitHub
+                    setupSection(title: "GITHUB", color: AppColors.boxGreen) {
+                        VStack(spacing: 16) {
+                            brutalistTextField("Username", text: $ghUsername, icon: "person.fill")
+                            
+                            VStack(alignment: .leading, spacing: 8) {
+                                brutalistSecureField("Personal Access Token", text: $ghToken, icon: "key.fill")
+                                Text("Required for contribution data. Create at GitHub → Settings → Developer Settings → Tokens.")
+                                    .font(.system(size: 10, weight: .bold))
+                                    .foregroundStyle(.white.opacity(0.4))
+                                    .padding(.horizontal, 4)
+                            }
+                        }
+                    }
 
-                    SecureField("Personal Access Token (optional)", text: $ghToken)
-                        .textContentType(.password)
+                    // MARK: - Codeforces
+                    setupSection(title: "CODEFORCES", color: AppColors.boxBlue) {
+                        brutalistTextField("Handle", text: $cfHandle, icon: "person.fill")
+                    }
 
-                    Text("A token enables contribution heatmap and streak data. Create one at GitHub → Settings → Developer Settings → Personal Access Tokens.")
-                        .font(.caption2)
-                        .foregroundStyle(.secondary)
-                }
-
-                Section("Codeforces") {
-                    TextField("Codeforces Handle", text: $cfHandle)
-                        .textContentType(.username)
-                        .autocorrectionDisabled()
-                        .textInputAutocapitalization(.never)
-                }
-
-                Section {
+                    // MARK: - Save Button
                     Button {
                         saveProfile()
                     } label: {
@@ -79,27 +77,74 @@ struct ProfileSetupView: View {
                             Spacer()
                             if isSaving {
                                 ProgressView()
+                                    .tint(.black)
                             } else {
-                                Text("Save Profile")
-                                    .font(.headline)
+                                Text("INITIALIZE PROFILE")
+                                    .clash(size: 18, weight: .bold)
+                                    .foregroundStyle(.black)
+                                    .tracking(1)
                             }
                             Spacer()
                         }
+                        .padding(.vertical, 24)
+                        .background(AppColors.boxYellow, in: RoundedRectangle(cornerRadius: 24))
                     }
                     .disabled(lcUsername.isEmpty && ghUsername.isEmpty && cfHandle.isEmpty)
+                    .padding(.top, 20)
+                    .padding(.bottom, 40)
                 }
-            }
-            .navigationTitle("Profile Setup")
-            .navigationBarTitleDisplayMode(.inline)
-            .onAppear {
-                if let profile = existingProfile {
-                    lcUsername = profile.leetcodeUsername ?? ""
-                    ghUsername = profile.githubUsername ?? ""
-                    cfHandle = profile.codeforcesHandle ?? ""
-                    ghToken = KeychainManager.shared.loadString(forKey: KeychainManager.Keys.githubToken) ?? ""
-                }
+                .padding(.horizontal, 16)
             }
         }
+        .onAppear {
+            if let profile = existingProfile {
+                lcUsername = profile.leetcodeUsername ?? ""
+                ghUsername = profile.githubUsername ?? ""
+                cfHandle = profile.codeforcesHandle ?? ""
+                ghToken = KeychainManager.shared.loadString(forKey: KeychainManager.Keys.githubToken) ?? ""
+            }
+        }
+    }
+
+    private func setupSection<Content: View>(title: String, color: Color, @ViewBuilder content: () -> Content) -> some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(title)
+                .clash(size: 14, weight: .bold)
+                .foregroundStyle(.white.opacity(0.6))
+                .tracking(1)
+            
+            BentoCard(backgroundColor: AppColors.cardBackground, cornerRadius: 28) {
+                content()
+            }
+        }
+    }
+
+    private func brutalistTextField(_ placeholder: String, text: Binding<String>, icon: String) -> some View {
+        HStack(spacing: 16) {
+            Image(systemName: icon)
+                .foregroundStyle(.white.opacity(0.4))
+            TextField("", text: text, prompt: Text(placeholder).foregroundColor(.white.opacity(0.2)))
+                .clash(size: 16, weight: .bold)
+                .foregroundStyle(.white)
+                .autocorrectionDisabled()
+                .textInputAutocapitalization(.never)
+        }
+        .padding()
+        .background(Color.white.opacity(0.05))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
+    }
+
+    private func brutalistSecureField(_ placeholder: String, text: Binding<String>, icon: String) -> some View {
+        HStack(spacing: 16) {
+            Image(systemName: icon)
+                .foregroundStyle(.white.opacity(0.4))
+            SecureField("", text: text, prompt: Text(placeholder).foregroundColor(.white.opacity(0.2)))
+                .clash(size: 16, weight: .bold)
+                .foregroundStyle(.white)
+        }
+        .padding()
+        .background(Color.white.opacity(0.05))
+        .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 
     private func saveProfile() {

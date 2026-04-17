@@ -10,6 +10,7 @@ import SwiftData
 
 /// The ultimate massive Box Box Dashboard featuring edge-to-edge bento graphics and Clash Display typography.
 struct DashboardView: View {
+    @Binding var selectedTab: RootView.Tab
     @Query private var profiles: [UserProfile]
     @State private var viewModel = DashboardViewModel()
 
@@ -49,46 +50,117 @@ struct DashboardView: View {
 
                         // MARK: - Grid Layout
                         if profile != nil {
-                            VStack(spacing: 12) {
-                                // 1. Hero DevScore Card
-                                scoreBento
-                                
-                                // 2. Platform Sub-Scores
-                                HStack(spacing: 12) {
-                                    platformBento(
-                                        title: "GITHUB",
-                                        score: "\(viewModel.devScore.ghTotalContributions)",
-                                        sub: "CONTRIBS",
-                                        color: AppColors.boxGreen,
-                                        icon: "arrow.triangle.branch"
-                                    )
+                            if let stats = viewModel.aggregatedStats {
+                                VStack(spacing: 12) {
+                                    // 1. Hero Solved Card (Replaces DevScore)
+                                    scoreBento(stats: stats)
                                     
-                                    platformBento(
-                                        title: "LEETCODE",
-                                        score: "\(viewModel.devScore.lcTotalSolved)",
-                                        sub: "SOLVED",
-                                        color: AppColors.boxYellow,
-                                        icon: "chevron.left.forwardslash.chevron.right"
-                                    )
-                                }
-                                .frame(height: 160)
+                                    // 1.5 Weekly LeetCode Progress
+                                    if let lcData = CacheManager.shared.loadCodable([String: Int].self, forKey: CacheManager.Keys.lcProfile) {
+                                        WeeklyProgressView(
+                                            data: lcData,
+                                            color: AppColors.boxYellow,
+                                            title: "LEETCODE WEEKLY"
+                                        )
+                                        .padding(.horizontal, 4)
+                                    }
+                                    
+                                    // 2. Platform Sub-Scores
+                                    HStack(spacing: 12) {
+                                        Button {
+                                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                                selectedTab = .github
+                                            }
+                                        } label: {
+                                            platformBento(
+                                                title: "GITHUB",
+                                                score: "\(stats.ghTotalContributions)",
+                                                sub: "CONTRIBS",
+                                                color: AppColors.boxGreen,
+                                                textColor: .white,
+                                                icon: "arrow.triangle.branch"
+                                            )
+                                        }
+                                        .buttonStyle(BouncyButtonStyle())
+                                        
+                                        Button {
+                                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                                selectedTab = .competitive
+                                                // Ideally should also switch the competitive VM tab to .leetcode, but navigation is enough
+                                            }
+                                        } label: {
+                                            platformBento(
+                                                title: "LEETCODE",
+                                                score: "\(stats.lcTotalSolved)",
+                                                sub: "SOLVED",
+                                                color: AppColors.boxYellow,
+                                                textColor: .black,
+                                                icon: "chevron.left.forwardslash.chevron.right"
+                                            )
+                                        }
+                                        .buttonStyle(BouncyButtonStyle())
+                                    }
+                                    .frame(height: 160)
 
-                                // 3. Codeforces Single Wide Bento
-                                HStack {
-                                    platformBento(
-                                        title: "CODEFORCES",
-                                        score: "\(viewModel.devScore.cfRating ?? 0)",
-                                        sub: "RATING",
-                                        color: AppColors.boxBlue,
-                                        icon: "trophy.fill"
-                                    )
-                                    
-                                    StatsBlock(
-                                        streak: "\(viewModel.devScore.ghCurrentStreak)D",
-                                        rank: viewModel.devScore.cfRank ?? "UNRATED"
-                                    )
+                                    // 3. Codeforces Single Wide Bento
+                                    HStack {
+                                        Button {
+                                            withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                                selectedTab = .competitive
+                                            }
+                                        } label: {
+                                            platformBento(
+                                                title: "CODEFORCES",
+                                                score: "\(stats.cfRating ?? 0)",
+                                                sub: "RATING",
+                                                color: AppColors.boxBlue,
+                                                textColor: .white,
+                                                icon: "trophy.fill"
+                                            )
+                                        }
+                                        .buttonStyle(BouncyButtonStyle())
+                                        
+                                        StatsBlock(
+                                            streak: "\(stats.ghCurrentStreak)D",
+                                            rank: stats.cfRank ?? "UNRATED"
+                                        )
+                                    }
+                                    .frame(height: 160)
+
+                                    // 4. Weekly LeetCode Tracker Component
+                                    BentoCard(backgroundColor: AppColors.cardBackground, cornerRadius: 28) {
+                                        HStack {
+                                            VStack(alignment: .leading, spacing: 4) {
+                                                Text("LEETCODE STREAK")
+                                                    .clash(size: 14, weight: .bold)
+                                                    .foregroundStyle(.white.opacity(0.6))
+                                                    .tracking(1)
+                                                Text("\(stats.lcStreak) DAYS")
+                                                    .clash(size: 32, weight: .bold)
+                                                    .foregroundStyle(AppColors.boxYellow)
+                                            }
+                                            Spacer()
+                                            Image(systemName: "flame.fill")
+                                                .font(.system(size: 32))
+                                                .foregroundStyle(AppColors.boxRed)
+                                        }
+                                    }
+                                    .frame(height: 100)
                                 }
-                                .frame(height: 160)
+                            } else {
+                                BentoCard(backgroundColor: AppColors.cardBackground, cornerRadius: 28) {
+                                    VStack(spacing: 16) {
+                                        ProgressView()
+                                            .tint(AppColors.boxYellow)
+                                            .scaleEffect(1.8)
+                                        Text("FETCHING STATISTICS")
+                                            .clash(size: 14, weight: .bold)
+                                            .foregroundStyle(.white.opacity(0.5))
+                                            .tracking(1)
+                                    }
+                                    .frame(maxWidth: .infinity, alignment: .center)
+                                    .padding(.vertical, 40)
+                                }
                             }
                         } else {
                             ContentUnavailableView(
@@ -100,6 +172,16 @@ struct DashboardView: View {
                     }
                     .padding(.horizontal, 16)
                     .padding(.vertical, 12)
+
+                    if !CacheManager.shared.isSuiteAccessible {
+                        HStack {
+                            Image(systemName: "exclamationmark.shield.fill")
+                            Text("APP GROUP DISCONNECTED - CHECK XCODE")
+                        }
+                        .clash(size: 10, weight: .bold)
+                        .foregroundStyle(AppColors.boxRed)
+                        .padding(.bottom, 20)
+                    }
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
@@ -158,111 +240,116 @@ struct DashboardView: View {
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 
-    /// Massive Hero Banner for the Total DevScore
-    private var scoreBento: some View {
+    /// Massive Hero Banner for the Aggregated Solved
+    private func scoreBento(stats: AggregatedStats) -> some View {
         BentoCard(backgroundColor: AppColors.boxRed, cornerRadius: 40) { // Push radius higher
             VStack(alignment: .leading, spacing: -8) {
                 HStack(alignment: .top) {
-                    Text("DEV SCORE")
-                        .clash(size: 18, weight: .bold)
-                        .foregroundStyle(.black.opacity(0.8))
-                        .tracking(1.5)
+                    Text("COMPETITIVE SOLVED")
+                        .clash(size: 16, weight: .bold)
+                        .foregroundStyle(AppColors.textRedShade) // Precise text shade requested
+                        .tracking(1)
                     Spacer()
                     Image(systemName: "flame.fill")
-                        .font(.system(size: 28))
-                        .foregroundStyle(.black)
+                        .font(.system(size: 24))
+                        .foregroundStyle(.white)
                 }
-
+                .padding(.bottom, 12)
+                
                 Spacer()
 
-                Text("\(viewModel.devScore.compositeScore)")
+                Text("\(stats.totalCompetitiveSolved)")
                     .clash(size: 110, weight: .bold)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(.white) // White text on Red
                     .tracking(-4) // Super tight number kerning
                     .minimumScaleFactor(0.4)
                     .lineLimit(1)
-                    .padding(.bottom, -12)
-
+                
                 HStack {
-                    Text(viewModel.devScore.tier.uppercased())
-                        .clash(size: 16, weight: .bold)
+                    Text("GLOBAL")
+                        .clash(size: 20, weight: .bold)
                         .foregroundStyle(.white)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
-                        .background(.black, in: Capsule())
+                    
                     Spacer()
+                    
+                    Text("LATEST: \(viewModel.lastSyncText.uppercased())")
+                        .clash(size: 12, weight: .bold)
+                        .foregroundStyle(AppColors.textRedShade)
                 }
-                .padding(.bottom, 8)
             }
         }
         .frame(height: 240)
     }
 
-    /// Tightly packed square metric blocks
-    private func platformBento(title: String, score: String, sub: String, color: Color, icon: String) -> some View {
-        BentoCard(backgroundColor: color, cornerRadius: 36) {
+    private func platformBento(title: String, score: String, sub: String, color: Color, textColor: Color, icon: String) -> some View {
+        BentoCard(backgroundColor: color, cornerRadius: 28) {
             VStack(alignment: .leading, spacing: 0) {
                 HStack {
                     Image(systemName: icon)
-                        .font(.system(size: 20, weight: .black))
-                        .foregroundStyle(.black)
+                        .font(.system(size: 18, weight: .black))
                     Spacer()
-                    Text(title)
-                        .clash(size: 10, weight: .bold)
-                        .foregroundStyle(.black.opacity(0.8))
-                        .tracking(1)
                 }
+                .foregroundStyle(textColor)
 
                 Spacer()
 
                 Text(score)
                     .clash(size: 54, weight: .bold)
-                    .foregroundStyle(.black)
+                    .foregroundStyle(textColor)
                     .tracking(-2)
                     .minimumScaleFactor(0.5)
                     .lineLimit(1)
                     .padding(.bottom, -4)
 
                 Text(sub)
-                    .clash(size: 12, weight: .bold)
-                    .foregroundStyle(.black.opacity(0.8))
+                    .clash(size: 14, weight: .bold)
+                    .foregroundStyle(textColor.opacity(0.8))
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 
-/// Extra deep-black companion block
+/// Helper block extracting the secondary metrics into a stacked UI
 struct StatsBlock: View {
     let streak: String
     let rank: String
     
     var body: some View {
-        BentoCard(backgroundColor: AppColors.cardBackground, cornerRadius: 36) {
-            VStack(alignment: .leading, spacing: 0) {
-                Text("STREAK")
-                    .clash(size: 14, weight: .bold)
-                    .foregroundStyle(.white.opacity(0.6))
-                
-                Text(streak)
-                    .clash(size: 32, weight: .bold)
-                    .foregroundStyle(.white)
-                    .tracking(-1)
-                
-                Spacer()
-                
-                Text("RANK")
-                    .clash(size: 14, weight: .bold)
-                    .foregroundStyle(.white.opacity(0.6))
-                
-                Text(rank.prefix(5).uppercased())
-                    .clash(size: 24, weight: .bold)
-                    .foregroundStyle(AppColors.boxYellow)
-                    .tracking(-1)
-                    .minimumScaleFactor(0.5)
-                    .lineLimit(1)
+        VStack(spacing: 12) {
+            BentoCard(backgroundColor: AppColors.cardBackground, cornerRadius: 24) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(streak)
+                        .clash(size: 28, weight: .bold)
+                        .foregroundStyle(.white)
+                    Text("GH STREAK")
+                        .clash(size: 10, weight: .bold)
+                        .foregroundStyle(.white.opacity(0.6))
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            
+            BentoCard(backgroundColor: AppColors.cardBackground, cornerRadius: 24) {
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(rank.uppercased())
+                        .clash(size: 20, weight: .bold)
+                        .foregroundStyle(AppColors.boxYellow)
+                        .minimumScaleFactor(0.5)
+                        .lineLimit(1)
+                    Text("CF RANK")
+                        .clash(size: 10, weight: .bold)
+                        .foregroundStyle(.white.opacity(0.6))
+                }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+    }
+}
+
+// MARK: - Custom Tactile Button Style
+struct BouncyButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .scaleEffect(configuration.isPressed ? 0.95 : 1.0)
+            .animation(.spring(response: 0.2, dampingFraction: 0.6), value: configuration.isPressed)
     }
 }

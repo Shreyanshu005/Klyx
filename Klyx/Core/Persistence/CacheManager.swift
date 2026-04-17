@@ -25,6 +25,14 @@ final class CacheManager {
         self.defaults = UserDefaults(suiteName: "group.com.shreyanshu.klyx") ?? .standard
     }
 
+    /// Returns true if the App Group suite is physically reachable and writable.
+    var isSuiteAccessible: Bool {
+        let testKey = "debug_app_group_test"
+        defaults.set(true, forKey: testKey)
+        let success = defaults.bool(forKey: testKey)
+        return success && defaults != .standard
+    }
+
     // MARK: - Memory Cache
 
     func get<T>(_ key: String) -> T? {
@@ -63,7 +71,7 @@ final class CacheManager {
     // MARK: - Cache Keys
 
     enum Keys {
-        static let devScore = "cached_dev_score"
+        static let aggregatedStats = "cached_aggregated_stats"
         static let lcProfile = "cached_lc_profile"
         static let ghProfile = "cached_gh_profile"
         static let cfProfile = "cached_cf_profile"

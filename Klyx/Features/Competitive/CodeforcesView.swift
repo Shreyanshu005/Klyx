@@ -35,6 +35,11 @@ struct CodeforcesView: View {
                     ratingCards(user)
                 }
 
+                // MARK: - Upcoming Contests
+                if !viewModel.cfUpcomingContests.isEmpty {
+                    upcomingContestsSection
+                }
+
                 // MARK: - Recent Submissions
                 if !viewModel.cfSubmissions.isEmpty {
                     recentSubmissions
@@ -158,6 +163,48 @@ struct CodeforcesView: View {
                 }
             }
             .padding(.vertical, 8)
+        }
+    }
+
+    private var upcomingContestsSection: some View {
+        BentoCard(backgroundColor: AppColors.boxBlue, cornerRadius: 28) {
+            VStack(alignment: .leading, spacing: 16) {
+                HStack {
+                    Text("UPCOMING CONTESTS")
+                        .clash(size: 18, weight: .bold)
+                        .foregroundStyle(.white)
+                        .tracking(1)
+                    Spacer()
+                    Image(systemName: "calendar.badge.clock")
+                        .foregroundStyle(.white)
+                }
+
+                ForEach(Array(viewModel.cfUpcomingContests.prefix(3).enumerated()), id: \.element.id) { index, contest in
+                    HStack {
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(contest.name.uppercased())
+                                .clash(size: 14, weight: .bold)
+                                .foregroundStyle(.white)
+                                .lineLimit(2)
+
+                            if let date = contest.startDate {
+                                Text(date.formatted(date: .abbreviated, time: .shortened).uppercased())
+                                    .clash(size: 10, weight: .bold)
+                                    .foregroundStyle(.black)
+                                    .padding(.horizontal, 6)
+                                    .padding(.vertical, 2)
+                                    .background(.white, in: Capsule())
+                            }
+                        }
+                        Spacer()
+                    }
+
+                    if index < min(viewModel.cfUpcomingContests.count, 3) - 1 {
+                        Divider().background(.white.opacity(0.2))
+                    }
+                }
+            }
+            .padding(.vertical, 4)
         }
     }
 }

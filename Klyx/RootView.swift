@@ -36,7 +36,7 @@ struct RootView: View {
             switch self {
             case .dashboard: return "chart.bar.fill"
             case .competitive: return "trophy.fill"
-            case .github: return "arrow.triangle.branch"
+            case .github: return "square.stack.3d.up.fill"
             case .social: return "person.2.fill"
             case .settings: return "gearshape.fill"
             }
@@ -46,7 +46,7 @@ struct RootView: View {
     var body: some View {
         TabView(selection: $selectedTab) {
             // MARK: - Dashboard Tab
-            DashboardView()
+            DashboardView(selectedTab: $selectedTab)
                 .tabItem {
                     Image(systemName: Tab.dashboard.icon)
                 }
@@ -144,14 +144,10 @@ struct RootView: View {
         } label: {
             Text(title)
                 .clash(size: 14, weight: .bold)
-                .foregroundStyle(isSelected ? .black : .white)
+                .foregroundStyle(isSelected ? (tab == .leetcode ? .black : .white) : .white)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 16)
                 .background(isSelected ? color : AppColors.cardBackground, in: RoundedRectangle(cornerRadius: 16))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 16)
-                        .stroke(color, lineWidth: isSelected ? 0 : 2)
-                )
         }
     }
 }

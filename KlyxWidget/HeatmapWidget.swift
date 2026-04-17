@@ -47,7 +47,7 @@ struct HeatmapWidgetEntry: TimelineEntry {
     let calendar: [String: Int]
 }
 
-private let boxGreen = Color(red: 0.0, green: 0.82, blue: 0.4)
+private let boxGreen = Color(red: 2/255.0, green: 187/255.0, blue: 129/255.0)
 
 // MARK: - Widget Views
 
@@ -59,7 +59,7 @@ struct HeatmapWidgetView: View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
                 Text(entry.platform)
-                    .font(.custom("ClashDisplay-Bold", size: 14))
+                    .clash(size: 14, weight: .bold)
                     .foregroundStyle(.white)
                     .tracking(1)
                 Spacer()
@@ -73,9 +73,14 @@ struct HeatmapWidgetView: View {
                 ForEach(0..<18) { col in
                     VStack(spacing: 4) {
                         ForEach(0..<4) { row in
-                            RoundedRectangle(cornerRadius: 3, style: .continuous)
-                                .fill(colorFor(col: col, row: row))
-                                .frame(width: 14, height: 14)
+                            ZStack {
+                                RoundedRectangle(cornerRadius: 3)
+                                    .fill(Color.black.opacity(0.1))
+                                
+                                RoundedRectangle(cornerRadius: 3)
+                                    .fill(colorFor(col: col, row: row))
+                            }
+                            .frame(width: 14, height: 14)
                         }
                     }
                 }
@@ -83,15 +88,31 @@ struct HeatmapWidgetView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .padding()
-        .containerBackground(Color(white: 0.08), for: .widget)
+        .containerBackground(AppColors.boxGreen, for: .widget)
     }
     
     private func colorFor(col: Int, row: Int) -> Color {
-        let total = col + row
-        if entry.calendar.isEmpty { return .black }
+        let maxCols = 18
+        let maxRows = 4
+        let daysAgo = ((maxCols - 1) - col) * maxRows + ((maxRows - 1) - row)
         
-        let isActive = (entry.calendar.values.first ?? 0) > 0 // pseudo-mock since it requires intense true date loop calculation
-        return isActive && (total % 3 == 0) ? boxGreen : .black
+        guard let date = Calendar.current.date(byAdding: .day, value: -daysAgo, to: entry.date) else {
+            return .clear
+        }
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let dateString = formatter.string(from: date)
+        
+        let count = entry.calendar[dateString] ?? 0
+        if count == 0 { return .clear }
+        
+        // Deep obsidian green for contrast on bright background
+        let obsidianGreen = Color(red: 0/255.0, green: 80/255.0, blue: 40/255.0)
+        
+        if count < 3 { return obsidianGreen.opacity(0.3) }
+        if count < 10 { return obsidianGreen.opacity(0.6) }
+        return obsidianGreen.opacity(0.9)
     }
 }
 

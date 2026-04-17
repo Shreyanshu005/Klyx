@@ -49,58 +49,89 @@ struct LCHeatmapWidgetEntry: TimelineEntry {
 // MARK: - Widget View
 
 struct LCHeatmapWidgetEntryView: View {
+    @Environment(\.widgetFamily) var family
     var entry: LCHeatmapWidgetProvider.Entry
 
     var body: some View {
         VStack(alignment: .leading, spacing: 4) {
             HStack {
                 Text("LEETCODE")
-                    .font(.custom("ClashDisplay-Bold", size: 14))
-                    .foregroundStyle(Color(red: 0.95, green: 0.75, blue: 0.15))
+                    .clash(size: 14, weight: .bold)
+                    .foregroundStyle(.white)
                     .tracking(1)
                 Spacer()
                 Image(systemName: "chevron.left.forwardslash.chevron.right")
-                    .foregroundStyle(Color(red: 0.95, green: 0.75, blue: 0.15))
+                    .foregroundStyle(.white)
             }
             Spacer()
             
-            WidgetLCGrid(data: entry.calendar)
+            WidgetLCGrid(data: entry.calendar, anchor: entry.date)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .padding()
-        .containerBackground(Color(red: 0.1, green: 0.1, blue: 0.1), for: .widget)
+        .padding(family == .systemSmall ? 12 : 16) // Reduced padding for small
+        .containerBackground(AppColors.pureBlack, for: .widget)
     }
 }
 
 // MARK: - Helper Grid
 
 struct WidgetLCGrid: View {
+    @Environment(\.widgetFamily) var family
     let data: [String: Int]
+    let anchor: Date
+    
+    private var gridConfig: (cols: Int, size: CGFloat, spacing: CGFloat) {
+        switch family {
+        case .systemSmall:
+            return (cols: 6, size: 14, spacing: 3)
+        default:
+            return (cols: 15, size: 10, spacing: 3)
+        }
+    }
     
     var body: some View {
-        // Simplified grid rendering 7x7 logic
-        HStack(spacing: 2) {
-            ForEach(0..<14) { col in
-                VStack(spacing: 2) {
-                    ForEach(0..<7) { row in
-                        RoundedRectangle(cornerRadius: 1)
-                            .fill(colorFor(col: col, row: row))
-                            .frame(width: 8, height: 8)
+        let config = gridConfig
+        HStack(spacing: config.spacing) {
+            ForEach(0..<config.cols, id: \.self) { col in
+                VStack(spacing: config.spacing) {
+                    ForEach(0..<7, id: \.self) { row in
+                        ZStack {
+                            // Slot background so it doesn't look "empty"
+                            RoundedRectangle(cornerRadius: 3)
+                                .fill(Color.black.opacity(0.1))
+                            
+                            RoundedRectangle(cornerRadius: 3)
+                                .fill(colorFor(col: col, row: row, maxCols: config.cols))
+                        }
+                        .frame(width: config.size, height: config.size)
                     }
                 }
             }
         }
     }
     
-    // Abstracted logic: usually we'd generate a true grid from the date map.
-    // Since LC submission maps are keyed by "timestamp string" normally, we mock the color parsing here.
-    private func colorFor(col: Int, row: Int) -> Color {
-        let total = col + row
-        if data.isEmpty { return .black }
+    private func colorFor(col: Int, row: Int, maxCols: Int) -> Color {
+        let maxRows = 7
+        let daysAgo = ((maxCols - 1) - col) * maxRows + ((maxRows - 1) - row)
         
-        let isActive = (data.values.first ?? 0) > 0 // pseudo-mock as true parsing needs a robust Date loop
-        let yellow = Color(red: 0.95, green: 0.75, blue: 0.15)
-        return isActive && (total % 3 == 0) ? yellow.opacity(0.8) : .black
+        guard let date = Calendar.current.date(byAdding: .day, value: -daysAgo, to: anchor) else {
+            return .clear
+        }
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let dateString = formatter.string(from: date)
+        
+        let count = data[dateString] ?? 0
+        if count == 0 { return .clear }
+        
+        // Deep Obsidian/Emerald colors for LeetCode on Yellow
+        let leaf = Color(red: 25/255.0, green: 150/255.0, blue: 60/255.0)
+        
+        if count < 2 { return leaf.opacity(0.3) }
+        if count < 5 { return leaf.opacity(0.6) }
+        if count < 10 { return leaf.opacity(0.8) }
+        return leaf
     }
 }
 

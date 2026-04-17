@@ -15,7 +15,7 @@ struct FriendDetailView: View {
     @Query private var savedProfiles: [FriendProfile]
     
     let friend: String
-    let score: DevScore
+    let stats: AggregatedStats
 
     private var trackedProfile: FriendProfile? {
         savedProfiles.first(where: { $0.alias == friend })
@@ -32,19 +32,19 @@ struct FriendDetailView: View {
                     BentoCard(backgroundColor: AppColors.boxBlue, cornerRadius: 40) {
                         VStack(alignment: .leading, spacing: 0) {
                             HStack {
-                                Text("COMPOSITE SCORE")
+                                Text("COMPETITIVE SOLVED")
                                     .clash(size: 14, weight: .bold)
-                                    .foregroundStyle(.white.opacity(0.8))
+                                    .foregroundStyle(.white)
                                     .tracking(1)
                                 Spacer()
-                                Image(systemName: "person.2.fill")
+                                Image(systemName: "flame.fill")
                                     .font(.system(size: 24))
                                     .foregroundStyle(.white)
                             }
                             
                             Spacer()
                             
-                            Text("\(score.compositeScore)")
+                            Text("\(stats.totalCompetitiveSolved)")
                                 .clash(size: 90, weight: .bold)
                                 .foregroundStyle(.white)
                                 .tracking(-4)
@@ -57,13 +57,6 @@ struct FriendDetailView: View {
                                     .padding(.horizontal, 16)
                                     .padding(.vertical, 8)
                                     .background(AppColors.boxYellow, in: Capsule())
-                                
-                                Text(score.tier.uppercased())
-                                    .clash(size: 14, weight: .bold)
-                                    .foregroundStyle(.white)
-                                    .padding(.horizontal, 16)
-                                    .padding(.vertical, 12)
-                                    .background(.black, in: Capsule())
                             }
                             .padding(.bottom, 8)
                         }
@@ -83,14 +76,14 @@ struct FriendDetailView: View {
                             .foregroundStyle(.black)
                             
                             HStack {
-                                detailStat(val: "\(score.ghTotalContributions)", title: "CONTRIBS", color: .black)
-                                detailStat(val: "\(score.ghCurrentStreak)", title: "CURR STREAK", color: .black)
-                                detailStat(val: "\(score.ghLongestStreak)", title: "MAX STREAK", color: .black)
+                                detailStat(val: "\(stats.ghTotalContributions)", title: "CONTRIBS", color: .black)
+                                detailStat(val: "\(stats.ghCurrentStreak)", title: "CURR STREAK", color: .black)
+                                detailStat(val: "\(stats.ghLongestStreak)", title: "MAX STREAK", color: .black)
                             }
                             HStack {
-                                detailStat(val: "\(score.ghPublicRepos)", title: "REPOS", color: .black.opacity(0.6))
-                                detailStat(val: "\(score.ghFollowers)", title: "FOLLOWERS", color: .black.opacity(0.6))
-                                detailStat(val: "\(score.ghStars)", title: "STARS", color: .black.opacity(0.6))
+                                detailStat(val: "\(stats.ghPublicRepos)", title: "REPOS", color: .black.opacity(0.6))
+                                detailStat(val: "\(stats.ghFollowers)", title: "FOLLOWERS", color: .black.opacity(0.6))
+                                detailStat(val: "\(stats.ghStars)", title: "STARS", color: .black.opacity(0.6))
                             }
                         }
                     }
@@ -108,14 +101,14 @@ struct FriendDetailView: View {
                             .foregroundStyle(.black)
                             
                             HStack {
-                                detailStat(val: "\(score.lcTotalSolved)", title: "TOTAL SOLVED", color: .black)
-                                detailStat(val: "\(score.lcRanking ?? 0)", title: "GLOBAL RANK", color: .black)
-                                detailStat(val: String(format: "%.0f", score.lcContestRating ?? 0), title: "RATING", color: .black)
+                                detailStat(val: "\(stats.lcTotalSolved)", title: "TOTAL SOLVED", color: .black)
+                                detailStat(val: "\(stats.lcRanking ?? 0)", title: "GLOBAL RANK", color: .black)
+                                detailStat(val: String(format: "%.0f", stats.lcContestRating ?? 0), title: "RATING", color: .black)
                             }
                             HStack {
-                                detailStat(val: "\(score.lcEasySolved)", title: "EASY", color: .black.opacity(0.6))
-                                detailStat(val: "\(score.lcMediumSolved)", title: "MEDIUM", color: .black.opacity(0.6))
-                                detailStat(val: "\(score.lcHardSolved)", title: "HARD", color: AppColors.boxRed)
+                                detailStat(val: "\(stats.lcEasySolved)", title: "EASY", color: .black.opacity(0.6))
+                                detailStat(val: "\(stats.lcMediumSolved)", title: "MEDIUM", color: .black.opacity(0.6))
+                                detailStat(val: "\(stats.lcHardSolved)", title: "HARD", color: AppColors.boxRed)
                             }
                         }
                     }
@@ -130,16 +123,16 @@ struct FriendDetailView: View {
                                     .clash(size: 18, weight: .bold)
                                 Spacer()
                             }
-                            .foregroundStyle(AppColors.boxBlue)
+                            .foregroundStyle(.white)
                             
                             HStack {
-                                detailStat(val: "\(score.cfRating ?? 0)", title: "RATING", color: .white)
-                                detailStat(val: "\(score.cfMaxRating ?? 0)", title: "PEAK", color: .white)
-                                detailStat(val: score.cfRank ?? "N/A", title: "RANK", color: AppColors.boxYellow)
+                                detailStat(val: "\(stats.cfRating ?? 0)", title: "RATING", color: .white)
+                                detailStat(val: "\(stats.cfMaxRating ?? 0)", title: "PEAK", color: .white)
+                                detailStat(val: stats.cfRank ?? "N/A", title: "RANK", color: AppColors.boxYellow)
                             }
                             HStack {
-                                detailStat(val: "\(score.cfContestsAttended)", title: "CONTESTS", color: .white.opacity(0.6))
-                                detailStat(val: "\(score.cfProblemsSolved)", title: "SOLVED", color: .white.opacity(0.6))
+                                detailStat(val: "\(stats.cfContestsAttended)", title: "CONTESTS", color: .white.opacity(0.6))
+                                detailStat(val: "\(stats.cfProblemsSolved)", title: "SOLVED", color: .white.opacity(0.6))
                                 detailStat(val: "", title: "", color: .clear) // alignment spacer
                             }
                         }
@@ -159,7 +152,6 @@ struct FriendDetailView: View {
                         }
                     }
                     .frame(height: 64)
-                    .padding(.top, 24)
                 }
                 .padding(.horizontal, 16)
                 .padding(.vertical, 12)
