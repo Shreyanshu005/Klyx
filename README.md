@@ -8,6 +8,13 @@ Klyx is a high-performance, visually aggressive iOS application designed to trac
 - **Live Widgets Pipeline:** Contains native iOS Home Screen widgets (`DevWidget`, `StreakWidget`, `HeatmapWidget`) functioning on an App Group bridged data cache.
 - **Dynamic Heatmaps:** Custom built SVG/Grid parsing to render your activity calendar directly onto your dashboard.
 
+## 🖼️ Showcase
+| | | |
+|:---:|:---:|:---:|
+| ![Klyx 1](https://ibb.co/gMvnHrTf) | ![Klyx 2](https://ibb.co/fGL0wPWb) | ![Klyx 3](https://ibb.co/60ZssRnL) |
+| ![Klyx 4](https://ibb.co/wr8QwJKS) | ![Klyx 5](https://ibb.co/KzfNBWV8) | ![Klyx 6](https://ibb.co/GyM1BnX) |
+| ![Klyx 7](https://ibb.co/JFc2jhcq) | ![Klyx 8](https://ibb.co/RTcdsRcv) | ![Klyx 9](https://ibb.co/zWTT2dhM) |
+
 ## 🏗️ Architecture & Data Flow 
 
 Klyx utilizes a modernized MVVM architecture with strict, protocol-bound Service layers hitting high-throughput API Endpoints concurrently via Swift `async/await`.
