@@ -6,7 +6,20 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		63205B702F9248BA0050B84A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63205B6F2F9248BA0050B84A /* WidgetKit.framework */; };
+		63205B722F9248BA0050B84A /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63205B712F9248BA0050B84A /* SwiftUI.framework */; };
+		63205B832F9248BC0050B84A /* KlyxWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 63205B6D2F9248BA0050B84A /* KlyxWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
+		63205B812F9248BC0050B84A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6387FA3F2F9239AC00B5C6BE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 63205B6C2F9248BA0050B84A;
+			remoteInfo = KlyxWidgetExtension;
+		};
 		6387FA552F9239AF00B5C6BE /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 6387FA3F2F9239AC00B5C6BE /* Project object */;
@@ -23,13 +36,48 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		63205B842F9248BC0050B84A /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				63205B832F9248BC0050B84A /* KlyxWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		63205B6D2F9248BA0050B84A /* KlyxWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = KlyxWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		63205B6F2F9248BA0050B84A /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		63205B712F9248BA0050B84A /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		6387FA472F9239AC00B5C6BE /* Klyx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Klyx.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6387FA542F9239AF00B5C6BE /* KlyxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KlyxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6387FA5E2F9239AF00B5C6BE /* KlyxUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = KlyxUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		63205B872F9248BC0050B84A /* Exceptions for "KlyxWidget" folder in "KlyxWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 63205B6C2F9248BA0050B84A /* KlyxWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		63205B732F9248BA0050B84A /* KlyxWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				63205B872F9248BC0050B84A /* Exceptions for "KlyxWidget" folder in "KlyxWidgetExtension" target */,
+			);
+			path = KlyxWidget;
+			sourceTree = "<group>";
+		};
 		6387FA492F9239AC00B5C6BE /* Klyx */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = Klyx;
@@ -48,6 +96,15 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		63205B6A2F9248BA0050B84A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				63205B722F9248BA0050B84A /* SwiftUI.framework in Frameworks */,
+				63205B702F9248BA0050B84A /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6387FA442F9239AC00B5C6BE /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -72,12 +129,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		63205B6E2F9248BA0050B84A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				63205B6F2F9248BA0050B84A /* WidgetKit.framework */,
+				63205B712F9248BA0050B84A /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		6387FA3E2F9239AC00B5C6BE = {
 			isa = PBXGroup;
 			children = (
 				6387FA492F9239AC00B5C6BE /* Klyx */,
 				6387FA572F9239AF00B5C6BE /* KlyxTests */,
 				6387FA612F9239AF00B5C6BE /* KlyxUITests */,
+				63205B732F9248BA0050B84A /* KlyxWidget */,
+				63205B6E2F9248BA0050B84A /* Frameworks */,
 				6387FA482F9239AC00B5C6BE /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,6 +156,7 @@
 				6387FA472F9239AC00B5C6BE /* Klyx.app */,
 				6387FA542F9239AF00B5C6BE /* KlyxTests.xctest */,
 				6387FA5E2F9239AF00B5C6BE /* KlyxUITests.xctest */,
+				63205B6D2F9248BA0050B84A /* KlyxWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -95,6 +164,28 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		63205B6C2F9248BA0050B84A /* KlyxWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 63205B882F9248BC0050B84A /* Build configuration list for PBXNativeTarget "KlyxWidgetExtension" */;
+			buildPhases = (
+				63205B692F9248BA0050B84A /* Sources */,
+				63205B6A2F9248BA0050B84A /* Frameworks */,
+				63205B6B2F9248BA0050B84A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				63205B732F9248BA0050B84A /* KlyxWidget */,
+			);
+			name = KlyxWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = KlyxWidgetExtension;
+			productReference = 63205B6D2F9248BA0050B84A /* KlyxWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		6387FA462F9239AC00B5C6BE /* Klyx */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6387FA682F9239AF00B5C6BE /* Build configuration list for PBXNativeTarget "Klyx" */;
@@ -102,10 +193,12 @@
 				6387FA432F9239AC00B5C6BE /* Sources */,
 				6387FA442F9239AC00B5C6BE /* Frameworks */,
 				6387FA452F9239AC00B5C6BE /* Resources */,
+				63205B842F9248BC0050B84A /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				63205B822F9248BC0050B84A /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				6387FA492F9239AC00B5C6BE /* Klyx */,
@@ -173,6 +266,9 @@
 				LastSwiftUpdateCheck = 2600;
 				LastUpgradeCheck = 2600;
 				TargetAttributes = {
+					63205B6C2F9248BA0050B84A = {
+						CreatedOnToolsVersion = 26.0.1;
+					};
 					6387FA462F9239AC00B5C6BE = {
 						CreatedOnToolsVersion = 26.0.1;
 					};
@@ -203,11 +299,19 @@
 				6387FA462F9239AC00B5C6BE /* Klyx */,
 				6387FA532F9239AF00B5C6BE /* KlyxTests */,
 				6387FA5D2F9239AF00B5C6BE /* KlyxUITests */,
+				63205B6C2F9248BA0050B84A /* KlyxWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		63205B6B2F9248BA0050B84A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6387FA452F9239AC00B5C6BE /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -232,6 +336,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		63205B692F9248BA0050B84A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6387FA432F9239AC00B5C6BE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -256,6 +367,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		63205B822F9248BC0050B84A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 63205B6C2F9248BA0050B84A /* KlyxWidgetExtension */;
+			targetProxy = 63205B812F9248BC0050B84A /* PBXContainerItemProxy */;
+		};
 		6387FA562F9239AF00B5C6BE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 6387FA462F9239AC00B5C6BE /* Klyx */;
@@ -269,6 +385,66 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		63205B852F9248BC0050B84A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3S9PPRUG6U;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = KlyxWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = KlyxWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = shreyanshu.Klyx.KlyxWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		63205B862F9248BC0050B84A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 3S9PPRUG6U;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = KlyxWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = KlyxWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = shreyanshu.Klyx.KlyxWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		6387FA662F9239AF00B5C6BE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -541,6 +717,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		63205B882F9248BC0050B84A /* Build configuration list for PBXNativeTarget "KlyxWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				63205B852F9248BC0050B84A /* Debug */,
+				63205B862F9248BC0050B84A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		6387FA422F9239AC00B5C6BE /* Build configuration list for PBXProject "Klyx" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
