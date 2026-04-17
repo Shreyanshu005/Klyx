@@ -7,6 +7,11 @@
 
 import SwiftUI
 
+// MARK: - Constants Bridge
+enum Constants {
+    static let appGroupID = "group.appminds.klyxx"
+}
+
 // MARK: - App Colors
 enum AppColors {
     static let boxRed = Color(hex: "#F5191D")

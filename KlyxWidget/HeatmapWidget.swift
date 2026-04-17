@@ -28,7 +28,7 @@ struct HeatmapWidgetProvider: TimelineProvider {
     }
     
     private func loadEntry() -> HeatmapWidgetEntry {
-        let defaults = UserDefaults(suiteName: "group.com.shreyanshu.klyx") ?? .standard
+        let defaults = UserDefaults(suiteName: Constants.appGroupID) ?? .standard
 
         if let data = defaults.data(forKey: "cached_gh_profile"),
            let dict = try? JSONDecoder().decode([String: Int].self, from: data) {

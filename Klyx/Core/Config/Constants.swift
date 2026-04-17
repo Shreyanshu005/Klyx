@@ -14,7 +14,8 @@ enum Constants {
     // MARK: - App Group
 
     /// Shared App Group identifier for main app ↔ widget data sharing.
-    static let appGroupID = "group.com.shreyanshu.klyx"
+    /// Shared App Group identifier for main app ↔ widget data sharing.
+    static let appGroupID = "group.appminds.klyxx"
 
     // MARK: - API Base URLs
 

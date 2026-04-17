@@ -26,7 +26,7 @@ struct WeeklyWidgetProvider: TimelineProvider {
     }
 
     private func loadEntry() -> WeeklyWidgetEntry {
-        let defaults = UserDefaults(suiteName: "group.com.shreyanshu.klyx") ?? .standard
+        let defaults = UserDefaults(suiteName: Constants.appGroupID) ?? .standard
         let lcData = defaults.data(forKey: "cached_lc_profile")
         let dict = (try? JSONDecoder().decode([String: Int].self, from: lcData ?? Data())) ?? [:]
         

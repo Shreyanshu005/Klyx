@@ -28,7 +28,7 @@ struct StreakWidgetProvider: TimelineProvider {
     }
 
     private func loadEntry() -> StreakWidgetEntry {
-        let defaults = UserDefaults(suiteName: "group.com.shreyanshu.klyx") ?? .standard
+        let defaults = UserDefaults(suiteName: Constants.appGroupID) ?? .standard
 
         if let data = defaults.data(forKey: "cached_aggregated_stats"),
            let score = try? JSONDecoder().decode(WidgetStreakData.self, from: data) {

@@ -69,7 +69,7 @@ final class HeatmapEntry {
 
 enum DataStoreConfig {
     /// The shared SwiftData model container.
-    /// TODO: Switch to `groupContainer: .identifier("group.com.shreyanshu.klyx")`
+    /// TODO: Switch to `groupContainer: .identifier(Constants.appGroupID)`
     /// once the Widget target is created and App Group entitlement is added in Xcode.
     static func makeContainer() throws -> ModelContainer {
         let schema = Schema([

@@ -22,7 +22,7 @@ final class CacheManager {
     private let defaultTTL: TimeInterval = 15 * 60
 
     init() {
-        self.defaults = UserDefaults(suiteName: "group.com.shreyanshu.klyx") ?? .standard
+        self.defaults = UserDefaults(suiteName: Constants.appGroupID) ?? .standard
     }
 
     /// Returns true if the App Group suite is physically reachable and writable.

@@ -28,7 +28,7 @@ struct LCHeatmapWidgetProvider: TimelineProvider {
     }
 
     private func loadEntry() -> LCHeatmapWidgetEntry {
-        let defaults = UserDefaults(suiteName: "group.com.shreyanshu.klyx") ?? .standard
+        let defaults = UserDefaults(suiteName: Constants.appGroupID) ?? .standard
 
         if let data = defaults.data(forKey: "cached_lc_profile"),
            let dict = try? JSONDecoder().decode([String: Int].self, from: data) {

@@ -93,7 +93,7 @@ Klyx/
 To correctly compile Klyx and see the Home Screen Widgets functioning:
 1. Open `Klyx.xcodeproj` in Xcode.
 2. Select the `Klyx` target and navigate to **Signing & Capabilities**.
-3. Ensure **App Groups** is enabled with `group.com.shreyanshu.klyx` selected.
+3. Ensure **App Groups** is enabled with `group.appminds.klyxx` selected.
 4. Select the `KlyxWidgetExtension` target and ensure it possesses the exact same App Group.
 5. If you do not enable the App Group, Sandbox restrictions will deliberately prevent the widgets from reading the DevScore.
 6. **Tokens:** To populate the GitHub Heatmap, ensure you input a valid GitHub PAT (Personal Access Token) in the `ProfileSetupView`.
