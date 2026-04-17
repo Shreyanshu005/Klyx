@@ -11,7 +11,7 @@ Klyx is a high-performance, visually aggressive iOS application designed to trac
 ## 🖼️ Showcase
 | | | |
 |:---:|:---:|:---:|
-| ![Klyx 1](https://i.ibb.co/LzQGb0tc/IMG-4075.jpg) | ![Klyx 2](https://i.ibb.co/Tqdh3FGZ/IMG-4076.png) | ![Klyx 3](https://i.ibb.co/RTSHHpvd/IMG-4077.png) |
+| ![Klyx 1](https://i.ibb.co/LzQGb0tc/IMG-4075.jpg) | ![Klyx 2](https://i.ibb.co/S7H0c57/IMG-4076.png) | ![Klyx 3](https://i.ibb.co/RTSHHpvd/IMG-4077.png) |
 | ![Klyx 4](https://i.ibb.co/mFdyXvH9/IMG-4078.png) | ![Klyx 5](https://i.ibb.co/WpMD7fBR/IMG-4080.png) | ![Klyx 6](https://i.ibb.co/8qxRTNJ/IMG-4084.png) |
 | ![Klyx 7](https://i.ibb.co/Pzr4GSrM/IMG-4083.png) | ![Klyx 8](https://i.ibb.co/qYpVcTpy/IMG-4082.png) | ![Klyx 9](https://i.ibb.co/FkLLYpbr/IMG-4081.png) |
 
