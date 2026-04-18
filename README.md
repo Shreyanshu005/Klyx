@@ -36,6 +36,30 @@
 
 ---
 
+## 🧩 Widgets Library
+
+Klyx features a robust suite of native iOS Home Screen widgets, built with **WidgetKit** and synchronized via a shared **App Group** pipeline.
+
+### 📍 Streak Tracking (Small/Medium)
+*   **Platform Focus:** Consolidates GitHub contributions and LeetCode solve streaks into a single, high-contrast glance.
+*   **Design:** Uses the "Noir Red" and "Box Yellow" themes to signal activity health.
+
+### 🗓️ GitHub Heatmap (Medium)
+*   **Layout:** A standard 7-row vertical grid (Week-per-Column) providing a total of 140 days of history.
+*   **Colors:** Utilizes "Obsidian Green" indicators on a pure black background for ultimate visual punch.
+*   **Sizing:** Normalized 10pt boxes with precise spacing to match the desktop contribution graph.
+
+### ⌨️ LeetCode Heatmap (Small/Medium)
+*   **Layout:** A compact 6-column grid optimized for the `.systemSmall` family.
+*   **Visuals:** Features "Emerald" activity layers over high-visibility dark-gray "empty" slots.
+*   **Density:** Reduced padding ensures the complexity of your daily solve counts is preserved even on smaller screens.
+
+### 📊 Weekly Progress (Small)
+*   **Purpose:** Tracks your current week (Sunday-Saturday) performance.
+*   **Logic:** Dynamically fills boxes based on daily activity counts stored in the shared data bridge. Useful for maintaining momentum throughout the work week.
+
+---
+
 ## 🏗️ Architecture & Data Flow
 
 Klyx utilizes a modernized MVVM architecture with strict service isolation and concurrent data fetching.
@@ -85,6 +109,50 @@ graph TD
     Calc -- persists through App Group --> Cache
     Cache -- WidgetKit Reload --> Widgets
 ```
+
+### 🔄 The Synchronization Pipeline
+
+The app is designed to be reactive and "Concurrent-First." When the Dashboard appears, the following sequence occurs:
+
+```mermaid
+sequenceDiagram
+    participant U as User
+    participant V as DashboardView
+    participant VM as DashboardViewModel
+    participant S as ScoreCalculator
+    participant API as External APIs
+    participant C as AppGroup Cache
+    participant W as Home Widgets
+
+    U->>V: Opens App / Pulls to Refresh
+    V->>VM: Trigger Sync(UserProfiles)
+    
+    rect rgb(245, 25, 29)
+    note right of VM: Concurrent Execution (async let)
+    VM->>API: Fetch GitHub Stats
+    VM->>API: Fetch LeetCode Stats
+    VM->>API: Fetch Codeforces Rating
+    API-->>VM: Return JSON / GraphQL
+    end
+
+    VM->>S: Compute Unified "DevScore" & Total Solved
+    S->>C: Persist stats to group.appminds.klyxx
+    C->>W: WidgetCenter.shared.reloadAllTimelines()
+    
+    VM->>V: Update UI State
+    note left of V: Trigger Animations
+    V->>V: Count-up (Speedometer)
+    V->>V: Sequential Fill (Weekly Boxes)
+```
+
+---
+
+## 🏎️ Key Technical Decisions
+
+1.  **Concurrent Parsing**: We usage `async let` to fetch data from all three platforms simultaneously. The app finishes as fast as the slowest API response.
+2.  **App Group Bridge**: Because Widgets run in a separate process, we use an **App Group (`group.appminds.klyxx`)** to write JSON blobs to a shared disk space that the Widgets can "pick up" instantly.
+3.  **Brutalist Framework**: Instead of standard system styles, we use a custom "Box Box" framework where every element is a standardized `BentoCard`.
+4.  **Keychain Security**: GitHub Personal Access Tokens are encrypted in the system Keychain and only decrypted momentarily during a network request.
 
 ---
 
