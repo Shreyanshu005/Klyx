@@ -1,12 +1,12 @@
-# Kłyx: The Ultimate Unified Developer Dashboard 🚀
+# Kłyx: Unified Developer Observability 🚀
 
-Klyx is a high-performance, visually aggressive iOS application designed to track, aggregate, and visualize a developer’s true skill level. It pulls live coding statistics from **LeetCode**, **GitHub**, and **Codeforces**, computes a unified "DevScore", and displays everything in a heavy, solid-color, flat-matte aesthetic inspired by elite sports dashboards.
+![Platform](https://img.shields.io/badge/Platform-iOS-000000?style=for-the-badge&logo=apple)
+![Swift](https://img.shields.io/badge/Swift-5.10-F05138?style=for-the-badge&logo=swift)
+![WidgetKit](https://img.shields.io/badge/WidgetKit-Enabled-FFDA27?style=for-the-badge&logo=apple)
 
-## 🔥 Key Features
-- **Unified DevScore:** An algorithmic compilation of your Github commits, LeetCode solves, and Codeforces rating into a single master tier.
-- **Aggressive "Box Box" Aesthetic:** Completely customized Swift UI framework relying on heavy, un-droppable typography (`.black` weights) and intensely saturated pure solid colors. No gradients, no glass, no fluff.
-- **Live Widgets Pipeline:** Contains native iOS Home Screen widgets (`DevWidget`, `StreakWidget`, `HeatmapWidget`) functioning on an App Group bridged data cache.
-- **Dynamic Heatmaps:** Custom built SVG/Grid parsing to render your activity calendar directly onto your dashboard.
+**Kłyx** (pronounced *Clicks*) is a high-performance, visually aggressive iOS dashboard designed for developers who treat coding as a competitive sport. It aggregates live metrics from **GitHub**, **LeetCode**, and **Codeforces** into a single, master "DevScore," allowing you to track your technical growth with zero friction.
+
+---
 
 ## 🖼️ Showcase
 | | | |
@@ -15,13 +15,33 @@ Klyx is a high-performance, visually aggressive iOS application designed to trac
 | <img src="https://i.ibb.co/mFdyXvH9/IMG-4078.png" width="250"> | <img src="https://i.ibb.co/WpMD7fBR/IMG-4080.png" width="250"> | <img src="https://i.ibb.co/8qxRTNJ/IMG-4084.png" width="250"> |
 | <img src="https://i.ibb.co/Pzr4GSrM/IMG-4083.png" width="250"> | <img src="https://i.ibb.co/qYpVcTpy/IMG-4082.png" width="250"> | <img src="https://i.ibb.co/FkLLYpbr/IMG-4081.png" width="250"> |
 
-## 🏗️ Architecture & Data Flow 
+---
 
-Klyx utilizes a modernized MVVM architecture with strict, protocol-bound Service layers hitting high-throughput API Endpoints concurrently via Swift `async/await`.
+## 🔥 Features
+
+### 🖥️ High-Performance Dashboard
+*   **DevScore Algorithm:** Calculates a composite score based on GitHub contributions, LeetCode problem difficulty, and Codeforces global rating.
+*   **Speedometer Animations:** Live count-up animations for your major metrics using custom `AnimatableModifier` protocols.
+*   **Sequential Weekly Progress:** Watch your weekly LeetCode activity "fill in" with a smooth, staggered animation every time you open the dashboard.
+
+### 📱 Native Home Screen Widgets
+*   **GitHub Heatmap:** A professional, 7-row vertical activity matrix following the "Obsidion Noir" aesthetic.
+*   **LeetCode Heatmap:** Optimized small and medium widgets with high-contrast grids and reduced padding for maximum visibility.
+*   **Streak Tracking:** Dedicated widgets for monitoring your contribution habits without opening the app.
+
+### 🎨 Brutalist "Noir" Aesthetic
+*   **Hard-Matter UI:** Pure solid colors (`#F5191D`, `#FFDA27`, `#2F1FFD`) with no gradients or drop shadows.
+*   **Clash Display Typography:** Heavy, high-impact weights that command attention.
+*   **Tactile Feedback:** Spring-based interactions that make the "Bento Box" grid feel alive.
+
+---
+
+## 🏗️ Architecture & Data Flow
+
+Klyx utilizes a modernized MVVM architecture with strict service isolation and concurrent data fetching.
 
 ```mermaid
 graph TD
-    %% Styling
     classDef ui fill:#FF2323,stroke:#fff,stroke-width:2px,color:#fff,font-weight:bold
     classDef model fill:#E0FF00,stroke:#000,stroke-width:2px,color:#000
     classDef service fill:#303CFF,stroke:#fff,stroke-width:2px,color:#fff
@@ -54,53 +74,46 @@ graph TD
         Key[KeychainManager]:::storage
     end
 
-    %% Flow
     Dashboard -- triggers refresh --> DashVM
     DashVM -- executes concurrently --> Calc
-    
-    Calc --> LC
-    Calc --> GH
-    Calc --> CF
-
     LC --> Client
     GH --> Client
     CF --> Client
-
     Client -- REST / GraphQL --> ExternalAPIs((External APIs))
-
     DashVM -- fetches tokens --> Key
     Dashboard -- reads profiles --> Data
-
-    Calc -- persists DevScore data --> Cache
+    Calc -- persists through App Group --> Cache
     Cache -- WidgetKit Reload --> Widgets
 ```
 
-## 🛠️ Project Structure
-```text
-Klyx/
-├── Core/
-│   ├── Auth/           # Keychain token preservation
-│   ├── Config/         # Global endpoints / secrets
-│   ├── Models/         # Codable targets for external APIs
-│   ├── Networking/     # Central APIClient and URL Request dispatchers
-│   └── Persistence/    # SwiftData Store and App Group UserDefault caches
-├── Features/
-│   ├── Dashboard/      # Main landing grid
-│   ├── Competitive/    # LeetCode / Codeforces views
-│   ├── GitHub/         # GitHub views
-│   ├── Profile/        # Setup and Settings
-│   └── Services/       # Business logic for platform parsing
-├── Shared/
-│   ├── Components/     # Base UI Elements (BentoCards, StatCards)
-│   └── Theme/          # AppColors (The core palette)
-└── KlyxWidget/         # Dedicated Target for Apple WidgetKit UI
-```
+---
 
-## ⚠️ Building The App
-To correctly compile Klyx and see the Home Screen Widgets functioning:
-1. Open `Klyx.xcodeproj` in Xcode.
-2. Select the `Klyx` target and navigate to **Signing & Capabilities**.
-3. Ensure **App Groups** is enabled with `group.appminds.klyxx` selected.
-4. Select the `KlyxWidgetExtension` target and ensure it possesses the exact same App Group.
-5. If you do not enable the App Group, Sandbox restrictions will deliberately prevent the widgets from reading the DevScore.
-6. **Tokens:** To populate the GitHub Heatmap, ensure you input a valid GitHub PAT (Personal Access Token) in the `ProfileSetupView`.
+## 🛠️ Tech Stack
+*   **UI Framework:** SwiftUI (iOS 17+)
+*   **Database:** SwiftData for persistent user profiles.
+*   **Persistence:** `UserDefaults` with App Group sharing for WidgetKit access.
+*   **Networking:** Native `URLSession` with `async/await` and GraphQL support for LeetCode/GitHub.
+*   **Security:** Keychain Services for protecting GitHub Personal Access Tokens.
+
+---
+
+## ⚠️ Building & Customization
+
+> [!IMPORTANT]
+> To ensure the Widgets can read your dashboard data, the app relies on a Shared App Group.
+
+1.  **Xcode Setup**: Open `Klyx.xcodeproj` and select the primary `Klyx` target.
+2.  **Signing & Capabilities**: Update the Bundle Identifier to your own domain and ensure the **App Groups** capability is active.
+3.  **App Group ID**: By default, the app uses `group.appminds.klyxx`. Ensure this ID is added to both the `Klyx` and `KlyxWidgetExtension` targets.
+4.  **API Tokens**: To view private GitHub stats or your detailed heatmap, enter a **GitHub PAT** in the app's settings. Public profiles work with just a username.
+
+---
+
+## 🔒 Privacy & Data
+*   **Local Only**: Klyx is a client-first application. 100% of your data (usernames, tokens, and cached stats) stays on your device or in your private iCloud container.
+*   **Zero Middle-Tier**: All API requests go directly from your phone to the platform providers (GitHub, LeetCode, Codeforces).
+
+---
+
+## 📝 License
+Proudly built for the developer community. Distributed under the MIT License.

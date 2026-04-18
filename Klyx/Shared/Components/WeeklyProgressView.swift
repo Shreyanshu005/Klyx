@@ -34,6 +34,8 @@ struct WeeklyProgressView: View {
         }
     }
 
+    @State private var isVisible = false
+
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             HStack(alignment: .bottom) {
@@ -51,21 +53,39 @@ struct WeeklyProgressView: View {
             }
 
             HStack(spacing: 6) {
-                ForEach(Array(weeklyData.enumerated()), id: \.offset) { _, day in
+                ForEach(Array(weeklyData.enumerated()), id: \.offset) { index, day in
                     VStack(spacing: 8) {
-                        RoundedRectangle(cornerRadius: 10)
-                            .fill(day.count > 0 ? color : Color.white.opacity(0.05))
-                            .frame(height: 44)
-                            .overlay(
+                        ZStack {
+                            // Empty box background (Dark Gray)
+                            RoundedRectangle(cornerRadius: 10)
+                                .fill(Color.white.opacity(0.1))
+                            
+                            // Filling color
+                            if day.count > 0 {
                                 RoundedRectangle(cornerRadius: 10)
-                                    .stroke(.white.opacity(day.isToday ? 0.3 : 0), lineWidth: 2)
-                            )
+                                    .fill(color)
+                                    .opacity(isVisible ? 1.0 : 0.0)
+                                    .animation(.easeOut(duration: 0.4).delay(Double(index) * 0.1), value: isVisible)
+                            }
+                        }
+                        .frame(height: 44)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(.white.opacity(day.isToday ? 0.3 : 0), lineWidth: 2)
+                        )
                         
                         Text(day.day)
                             .clash(size: 12, weight: .bold)
                             .foregroundStyle(day.isToday ? color : .white.opacity(0.4))
+                            .opacity(isVisible ? 1.0 : 0.0)
+                            .animation(.easeIn(duration: 0.3).delay(Double(index) * 0.1), value: isVisible)
                     }
                 }
+            }
+        }
+        .onAppear {
+            withAnimation {
+                isVisible = true
             }
         }
     }

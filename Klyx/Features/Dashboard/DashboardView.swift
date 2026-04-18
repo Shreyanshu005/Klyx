@@ -13,6 +13,7 @@ struct DashboardView: View {
     @Binding var selectedTab: RootView.Tab
     @Query private var profiles: [UserProfile]
     @State private var viewModel = DashboardViewModel()
+    @State private var animatedCompetitiveSolved: Int = 0
 
     private var profile: UserProfile? { profiles.first }
     
@@ -259,11 +260,23 @@ struct DashboardView: View {
                 Spacer()
 
                 Text("\(stats.totalCompetitiveSolved)")
-                    .clash(size: 110, weight: .bold)
-                    .foregroundStyle(.white) // White text on Red
-                    .tracking(-4) // Super tight number kerning
+                    .animatingNumber(animatedCompetitiveSolved)
+                    .foregroundStyle(.white)
+                    .tracking(-4)
                     .minimumScaleFactor(0.4)
                     .lineLimit(1)
+                    .onChange(of: stats.totalCompetitiveSolved) { oldValue, newValue in
+                        withAnimation(.interpolatingSpring(stiffness: 40, damping: 15)) {
+                            animatedCompetitiveSolved = newValue
+                        }
+                    }
+                    .onAppear {
+                        if animatedCompetitiveSolved == 0 {
+                            withAnimation(.interpolatingSpring(stiffness: 40, damping: 15)) {
+                                animatedCompetitiveSolved = stats.totalCompetitiveSolved
+                            }
+                        }
+                    }
                 
                 HStack {
                     Text("GLOBAL")

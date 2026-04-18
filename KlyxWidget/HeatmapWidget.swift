@@ -68,19 +68,21 @@ struct HeatmapWidgetView: View {
             }
             .padding(.bottom, 12)
 
-            // Dynamic grid parsing real gh cache
-            HStack(spacing: 4) {
-                ForEach(0..<18) { col in
-                    VStack(spacing: 4) {
-                        ForEach(0..<4) { row in
+            // GitHub standard 7-row vertical layout
+            let targetRows = 7
+            let targetCols = 20
+            HStack(spacing: 3) {
+                ForEach(0..<targetCols, id: \.self) { col in
+                    VStack(spacing: 3) {
+                        ForEach(0..<targetRows, id: \.self) { row in
                             ZStack {
-                                RoundedRectangle(cornerRadius: 3)
-                                    .fill(Color.black.opacity(0.1))
+                                RoundedRectangle(cornerRadius: 2)
+                                    .fill(Color(white: 0.05)) // Extremely dark gray/black for empty slots
                                 
-                                RoundedRectangle(cornerRadius: 3)
-                                    .fill(colorFor(col: col, row: row))
+                                RoundedRectangle(cornerRadius: 2)
+                                    .fill(colorFor(col: col, row: row, maxCols: targetCols, maxRows: targetRows))
                             }
-                            .frame(width: 14, height: 14)
+                            .frame(width: 10, height: 10)
                         }
                     }
                 }
@@ -88,12 +90,10 @@ struct HeatmapWidgetView: View {
             .frame(maxWidth: .infinity, maxHeight: .infinity)
         }
         .padding()
-        .containerBackground(AppColors.boxGreen, for: .widget)
+        .containerBackground(AppColors.pureBlack, for: .widget)
     }
     
-    private func colorFor(col: Int, row: Int) -> Color {
-        let maxCols = 18
-        let maxRows = 4
+    private func colorFor(col: Int, row: Int, maxCols: Int, maxRows: Int) -> Color {
         let daysAgo = ((maxCols - 1) - col) * maxRows + ((maxRows - 1) - row)
         
         guard let date = Calendar.current.date(byAdding: .day, value: -daysAgo, to: entry.date) else {
@@ -107,12 +107,12 @@ struct HeatmapWidgetView: View {
         let count = entry.calendar[dateString] ?? 0
         if count == 0 { return .clear }
         
-        // Deep obsidian green for contrast on bright background
-        let obsidianGreen = Color(red: 0/255.0, green: 80/255.0, blue: 40/255.0)
+        // Vibrant Box Green for contrast on black background
+        let vibrantGreen = AppColors.boxGreen
         
-        if count < 3 { return obsidianGreen.opacity(0.3) }
-        if count < 10 { return obsidianGreen.opacity(0.6) }
-        return obsidianGreen.opacity(0.9)
+        if count < 3 { return vibrantGreen.opacity(0.3) }
+        if count < 8 { return vibrantGreen.opacity(0.6) }
+        return vibrantGreen
     }
 }
 

@@ -83,7 +83,7 @@ struct WidgetLCGrid: View {
     private var gridConfig: (cols: Int, size: CGFloat, spacing: CGFloat) {
         switch family {
         case .systemSmall:
-            return (cols: 6, size: 14, spacing: 3)
+            return (cols: 6, size: 12, spacing: 3)
         default:
             return (cols: 15, size: 10, spacing: 3)
         }
@@ -98,7 +98,7 @@ struct WidgetLCGrid: View {
                         ZStack {
                             // Slot background so it doesn't look "empty"
                             RoundedRectangle(cornerRadius: 3)
-                                .fill(Color.black.opacity(0.1))
+                                .fill(Color.white.opacity(0.15))
                             
                             RoundedRectangle(cornerRadius: 3)
                                 .fill(colorFor(col: col, row: row, maxCols: config.cols))
