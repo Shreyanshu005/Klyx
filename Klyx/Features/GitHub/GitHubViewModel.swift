@@ -1,10 +1,3 @@
-//
-//  GitHubViewModel.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import Foundation
 import Observation
 
@@ -36,7 +29,7 @@ final class GitHubViewModel {
         errorMessage = nil
 
         do {
-            // Profile + repos (no token needed)
+
             async let profileTask = ghService.fetchProfile(username: username)
             async let reposTask = ghService.fetchRepos(username: username)
 
@@ -44,7 +37,6 @@ final class GitHubViewModel {
             repos = try await reposTask
             totalStars = repos.reduce(0) { $0 + $1.stargazersCount }
 
-            // Contributions + streaks (requires token for GraphQL)
             if let token, !token.isEmpty {
                 async let calendarTask = ghService.fetchContributions(username: username, token: token)
                 async let streakTask = ghService.fetchStreaks(username: username, token: token)

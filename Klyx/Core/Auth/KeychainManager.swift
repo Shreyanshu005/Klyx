@@ -1,10 +1,3 @@
-//
-//  KeychainManager.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import Foundation
 import Security
 
@@ -19,7 +12,7 @@ final class KeychainManager {
 
     @discardableResult
     func save(_ data: Data, forKey key: String) -> Bool {
-        // Delete any existing item first
+
         delete(forKey: key)
 
         let query: [String: Any] = [

@@ -1,10 +1,3 @@
-//
-//  ServiceContainer.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 18/04/26.
-//
-
 import Foundation
 
 /// Centralized Dependency Injection container.

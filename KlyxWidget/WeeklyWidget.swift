@@ -1,10 +1,3 @@
-//
-//  WeeklyWidget.swift
-//  KlyxWidget
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import WidgetKit
 import SwiftUI
 
@@ -51,7 +44,7 @@ struct WeeklyWidgetView: View {
         let calendar = Calendar.current
         let anchor = entry.date
         
-        // Find the start of the current week (Sunday)
+
         let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: anchor)
         guard let startOfWeek = calendar.date(from: components) else { return [] }
         
@@ -134,4 +127,4 @@ struct WeeklyWidget: Widget {
 }
 
 // MARK: - Date Helpers (Local copy for widget target if needed, but assuming shared extensions)
-// Assuming Date+Helpers.swift is included in the Widget target.
+

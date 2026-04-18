@@ -1,10 +1,3 @@
-//
-//  StatCard.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import SwiftUI
 
 /// Flat, solid Box Box style mini card used throughout the app for stat lists.

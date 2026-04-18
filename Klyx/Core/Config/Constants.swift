@@ -1,10 +1,3 @@
-//
-//  Constants.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import Foundation
 
 /// App-wide constants.
@@ -26,13 +19,13 @@ enum Constants {
 
     // MARK: - Cache TTL (seconds)
 
-    static let defaultCacheTTL: TimeInterval = 15 * 60    // 15 min
-    static let heatmapCacheTTL: TimeInterval = 60 * 60    // 1 hr
-    static let profileCacheTTL: TimeInterval = 30 * 60    // 30 min
+    static let defaultCacheTTL: TimeInterval = 15 * 60
+    static let heatmapCacheTTL: TimeInterval = 60 * 60
+    static let profileCacheTTL: TimeInterval = 30 * 60
 
     // MARK: - Widget Refresh
 
-    static let widgetRefreshInterval: TimeInterval = 30 * 60  // 30 min
+    static let widgetRefreshInterval: TimeInterval = 30 * 60
 
     // MARK: - Score Weights
 

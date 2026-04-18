@@ -1,10 +1,3 @@
-//
-//  LCHeatmapWidget.swift
-//  KlyxWidget
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import WidgetKit
 import SwiftUI
 
@@ -68,7 +61,7 @@ struct LCHeatmapWidgetEntryView: View {
             WidgetLCGrid(data: entry.calendar, anchor: entry.date)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .padding(family == .systemSmall ? 12 : 16) // Reduced padding for small
+        .padding(family == .systemSmall ? 12 : 16)
         .containerBackground(AppColors.pureBlack, for: .widget)
     }
 }
@@ -96,7 +89,7 @@ struct WidgetLCGrid: View {
                 VStack(spacing: config.spacing) {
                     ForEach(0..<7, id: \.self) { row in
                         ZStack {
-                            // Slot background so it doesn't look "empty"
+
                             RoundedRectangle(cornerRadius: 3)
                                 .fill(Color.white.opacity(0.15))
                             
@@ -125,7 +118,7 @@ struct WidgetLCGrid: View {
         let count = data[dateString] ?? 0
         if count == 0 { return .clear }
         
-        // Deep Obsidian/Emerald colors for LeetCode on Yellow
+
         let leaf = Color(red: 25/255.0, green: 150/255.0, blue: 60/255.0)
         
         if count < 2 { return leaf.opacity(0.3) }

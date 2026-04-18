@@ -1,10 +1,3 @@
-//
-//  GHEndpoints.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import Foundation
 
 /// GitHub API endpoints — uses REST v3 and GraphQL v4.

@@ -1,10 +1,3 @@
-//
-//  HeatmapView.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import SwiftUI
 
 /// Reusable heatmap grid — works for both GitHub contributions and LeetCode submissions.
@@ -19,7 +12,7 @@ struct HeatmapView: View {
 
     private let cellSize: CGFloat = 11
     private let spacing: CGFloat = 2
-    private let weeksToShow = 26  // ~6 months
+    private let weeksToShow = 26
 
     /// Generate the grid of days for the past N weeks.
     private var gridDays: [[DayData]] {
@@ -30,7 +23,7 @@ struct HeatmapView: View {
 
         for dayOffset in stride(from: -(weeksToShow * 7 - 1), through: 0, by: 1) {
             guard let date = calendar.date(byAdding: .day, value: dayOffset, to: today) else { continue }
-            let key = date.isoDateString // Both platforms now use yyyy-MM-dd
+            let key = date.isoDateString
             let count = data[key] ?? 0
             currentWeek.append(DayData(date: date, count: count))
 

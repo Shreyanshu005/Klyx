@@ -1,10 +1,3 @@
-//
-//  FontExtensions.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import SwiftUI
 
 /// Wrapper custom font system enforcing the ClashDisplay family.
@@ -24,7 +17,7 @@ extension Font {
         case black = "ClashDisplay-Bold_Black"
         
         var filename: String {
-            // Overriding all mapping dynamically because we strictly only have ClashDisplay-Bold.otf inside our xcassets!
+
             return "ClashDisplay-Bold"
         }
     }

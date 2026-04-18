@@ -1,10 +1,3 @@
-//
-//  SocialViewModel.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import SwiftUI
 import Observation
 import SwiftData
@@ -44,7 +37,6 @@ final class SocialViewModel {
 
         let token = KeychainManager.shared.loadString(forKey: KeychainManager.Keys.githubToken)
 
-        // Fetch each friend's score concurrently using task group
         await withTaskGroup(of: FriendEntry?.self) { group in
             for profile in profiles {
                 group.addTask {
@@ -72,7 +64,6 @@ final class SocialViewModel {
             }
         }
 
-        // Generate Leaderboard Sorted tightly by Total Competitive Solved
         leaderboard = friends
             .sorted { $0.stats.totalCompetitiveSolved > $1.stats.totalCompetitiveSolved }
             .enumerated()

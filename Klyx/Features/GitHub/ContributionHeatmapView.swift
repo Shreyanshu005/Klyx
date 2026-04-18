@@ -1,10 +1,3 @@
-//
-//  ContributionHeatmapView.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import SwiftUI
 
 /// GitHub-style contribution heatmap showing the past year of activity.
@@ -19,7 +12,7 @@ struct ContributionHeatmapView: View {
         VStack(alignment: .leading, spacing: 12) {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(alignment: .top, spacing: cellSpacing) {
-                    // Weeks
+
                     ForEach(Array(calendar.weeks.enumerated()), id: \.offset) { _, week in
                         VStack(spacing: cellSpacing) {
                             ForEach(week.contributionDays) { day in
@@ -37,7 +30,7 @@ struct ContributionHeatmapView: View {
                     .clash(size: 10, weight: .bold)
                     .foregroundStyle(.white.opacity(0.6))
                 Spacer()
-                // Legend
+
                 HStack(spacing: 4) {
                     ForEach([0.1, 0.4, 0.7, 1.0], id: \.self) { opacity in
                         RoundedRectangle(cornerRadius: 2)

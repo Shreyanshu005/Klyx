@@ -1,10 +1,3 @@
-//
-//  AnimatableNumberModifier.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 18/04/26.
-//
-
 import SwiftUI
 
 /// A ViewModifier that allows for animating numeric text changes.
@@ -28,7 +21,6 @@ struct AnimatableNumberModifier: AnimatableModifier {
     }
 }
 
-// Higher order extension for easier usage
 extension View {
     func animatingNumber(_ number: Int, size: CGFloat = 110) -> some View {
         modifier(AnimatableNumberModifier(number: Double(number)))

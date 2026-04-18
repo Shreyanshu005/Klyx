@@ -1,10 +1,3 @@
-//
-//  DashboardViewModel.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import Foundation
 import Observation
 
@@ -31,7 +24,6 @@ final class DashboardViewModel {
             cache: container.cache
         )
 
-        // Load cached stats immediately for instant UI
         if let cached = cache.loadCodable(AggregatedStats.self, forKey: CacheManager.Keys.aggregatedStats) {
             self.aggregatedStats = cached
             self.lastSyncText = cached.lastUpdated.timeAgo

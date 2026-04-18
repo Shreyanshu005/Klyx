@@ -1,10 +1,3 @@
-//
-//  ScoreCalculator.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import Foundation
 import WidgetKit
 
@@ -77,10 +70,8 @@ final class ScoreCalculator {
             cfProblemsSolved: cf.solved
         )
 
-        // Persist for widget access
         cache.persistCodable(stats, forKey: CacheManager.Keys.aggregatedStats)
 
-        // Tell widgets to refresh immediately
         WidgetCenter.shared.reloadAllTimelines()
 
         return stats
@@ -114,14 +105,14 @@ final class ScoreCalculator {
             let contest = try await lcService.fetchContestHistory(username: username)
             metrics.contestRating = contest.userContestRanking?.rating
             
-            // Persist the heatmap calendar explicitly for widget access
+
             let calendar = try await lcService.fetchSubmissionCalendar(username: username)
             cache.persistCodable(calendar, forKey: CacheManager.Keys.lcProfile)
             
-            // Calculate Current Streak
+
             metrics.streak = calculateStreak(from: calendar)
         } catch {
-            // Silencing LC fetch error for production
+
         }
 
         return metrics
@@ -134,7 +125,7 @@ final class ScoreCalculator {
         let calendarRef = Calendar.current
         guard let yesterday = calendarRef.date(byAdding: .day, value: -1, to: .now)?.isoDateString else { return 0 }
         
-        // If no submission today or yesterday, streak is zero
+
         if (calendar[today] ?? 0) == 0 && (calendar[yesterday] ?? 0) == 0 {
             return 0
         }
@@ -173,7 +164,7 @@ final class ScoreCalculator {
                 let calendar = try await ghService.fetchContributions(username: username, token: token)
                 metrics.contributions = calendar.totalContributions
                 
-                // Persist the actual flat calendar to App Group for widgets
+
                 var simplifiedMap: [String: Int] = [:]
                 for week in calendar.weeks {
                     for day in week.contributionDays {
@@ -190,7 +181,7 @@ final class ScoreCalculator {
             let repos = try await ghService.fetchRepos(username: username)
             metrics.stars = repos.reduce(0) { $0 + $1.stargazersCount }
         } catch {
-            // Silencing GH fetch error for production
+
         }
 
         return metrics
@@ -218,7 +209,7 @@ final class ScoreCalculator {
             let uniqueSolved = Set(submissions.filter { $0.isAccepted }.map { $0.problem.displayName })
             metrics.solved = uniqueSolved.count
         } catch {
-            // Silencing CF fetch error for production
+
         }
 
         return metrics

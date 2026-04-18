@@ -1,10 +1,3 @@
-//
-//  DashboardView.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import SwiftUI
 import SwiftData
 
@@ -17,7 +10,7 @@ struct DashboardView: View {
 
     private var profile: UserProfile? { profiles.first }
     
-    // Auto-triggering task state bound to profile keys
+
     private var fingerprint: String {
         return [profile?.githubUsername, profile?.leetcodeUsername, profile?.codeforcesHandle]
             .compactMap { $0 }
@@ -53,10 +46,10 @@ struct DashboardView: View {
                         if profile != nil {
                             if let stats = viewModel.aggregatedStats {
                                 VStack(spacing: 12) {
-                                    // 1. Hero Solved Card (Replaces DevScore)
+
                                     scoreBento(stats: stats)
                                     
-                                    // 1.5 Weekly LeetCode Progress
+
                                     if let lcData = CacheManager.shared.loadCodable([String: Int].self, forKey: CacheManager.Keys.lcProfile) {
                                         WeeklyProgressView(
                                             data: lcData,
@@ -66,7 +59,7 @@ struct DashboardView: View {
                                         .padding(.horizontal, 4)
                                     }
                                     
-                                    // 2. Platform Sub-Scores
+
                                     HStack(spacing: 12) {
                                         Button {
                                             withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
@@ -87,7 +80,7 @@ struct DashboardView: View {
                                         Button {
                                             withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
                                                 selectedTab = .competitive
-                                                // Ideally should also switch the competitive VM tab to .leetcode, but navigation is enough
+
                                             }
                                         } label: {
                                             platformBento(
@@ -103,7 +96,6 @@ struct DashboardView: View {
                                     }
                                     .frame(height: 160)
 
-                                    // 3. Codeforces Single Wide Bento
                                     HStack {
                                         Button {
                                             withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
@@ -128,7 +120,6 @@ struct DashboardView: View {
                                     }
                                     .frame(height: 160)
 
-                                    // 4. Weekly LeetCode Tracker Component
                                     BentoCard(backgroundColor: AppColors.cardBackground, cornerRadius: 28) {
                                         HStack {
                                             VStack(alignment: .leading, spacing: 4) {
@@ -243,12 +234,12 @@ struct DashboardView: View {
 
     /// Massive Hero Banner for the Aggregated Solved
     private func scoreBento(stats: AggregatedStats) -> some View {
-        BentoCard(backgroundColor: AppColors.boxRed, cornerRadius: 40) { // Push radius higher
+        BentoCard(backgroundColor: AppColors.boxRed, cornerRadius: 40) {
             VStack(alignment: .leading, spacing: -8) {
                 HStack(alignment: .top) {
                     Text("COMPETITIVE SOLVED")
                         .clash(size: 16, weight: .bold)
-                        .foregroundStyle(AppColors.textRedShade) // Precise text shade requested
+                        .foregroundStyle(AppColors.textRedShade)
                         .tracking(1)
                     Spacer()
                     Image(systemName: "flame.fill")

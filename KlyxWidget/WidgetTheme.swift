@@ -1,10 +1,3 @@
-//
-//  WidgetTheme.swift
-//  KlyxWidget
-//
-//  Replicated branding definitions to satisfy the KlyxWidgetExtension target.
-//
-
 import SwiftUI
 
 // MARK: - Constants Bridge
@@ -31,17 +24,17 @@ extension Color {
 
         let a, r, g, b: UInt64
         switch hex.count {
-        case 3: // RGB (12-bit)
+        case 3:
             (a, r, g, b) = (255,
                             (int >> 8) * 17,
                             (int >> 4 & 0xF) * 17,
                             (int & 0xF) * 17)
-        case 6: // RRGGBB (24-bit)
+        case 6:
             (a, r, g, b) = (255,
                             int >> 16,
                             int >> 8 & 0xFF,
                             int & 0xFF)
-        case 8: // AARRGGBB (32-bit)
+        case 8:
             (a, r, g, b) = (int >> 24,
                             int >> 16 & 0xFF,
                             int >> 8 & 0xFF,

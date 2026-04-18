@@ -1,10 +1,3 @@
-//
-//  DataStore.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import Foundation
 import SwiftData
 
@@ -52,7 +45,7 @@ final class UserProfile {
 /// Shared between GitHub contributions and LeetCode submissions.
 @Model
 final class HeatmapEntry {
-    var platform: String       // "github", "leetcode"
+    var platform: String
     var date: Date
     var count: Int
     var colorHex: String?

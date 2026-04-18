@@ -1,10 +1,3 @@
-//
-//  AggregatedStats.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import Foundation
 
 /// The unified data model representing a developer's aggregated metrics

@@ -1,10 +1,3 @@
-//
-//  APIClient.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import Foundation
 
 // MARK: - API Errors

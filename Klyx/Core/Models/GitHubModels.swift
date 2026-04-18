@@ -1,10 +1,3 @@
-//
-//  GitHubModels.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import Foundation
 
 // MARK: - REST User Profile
@@ -67,8 +60,8 @@ struct GHContributionWeek: Decodable {
 struct GHContributionDay: Decodable, Identifiable {
     var id: String { date }
     let contributionCount: Int
-    let date: String          // "2025-04-17"
-    let color: String         // hex, e.g. "#216e39"
+    let date: String
+    let color: String
 }
 
 struct GHRepoConnection: Decodable {

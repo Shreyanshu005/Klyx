@@ -1,10 +1,3 @@
-//
-//  CacheManager.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import Foundation
 
 /// Lightweight cache manager using UserDefaults (App Group) for widget-sharable data

@@ -1,18 +1,11 @@
-//
-//  CodeforcesModels.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import Foundation
 
 // MARK: - Generic CF Response Wrapper
 
 struct CFResponse<T: Decodable>: Decodable {
-    let status: String        // "OK" or "FAILED"
+    let status: String
     let result: T?
-    let comment: String?      // error message when status == "FAILED"
+    let comment: String?
 }
 
 // MARK: - User Info
@@ -96,8 +89,8 @@ struct CFProblem: Decodable {
 struct CFContest: Decodable, Identifiable {
     let id: Int
     let name: String
-    let type: String                // "CF", "IOI", "ICPC"
-    let phase: String               // "BEFORE", "CODING", "FINISHED"
+    let type: String
+    let phase: String
     let durationSeconds: Int
     let startTimeSeconds: Int?
     let relativeTimeSeconds: Int?

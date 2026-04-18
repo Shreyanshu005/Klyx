@@ -1,10 +1,3 @@
-//
-//  CodeforcesView.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import SwiftUI
 
 /// Codeforces stats — Box Box flat aesthetic with Clash Display.

@@ -1,10 +1,3 @@
-//
-//  RankBadge.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import SwiftUI
 
 /// Flat, solid Box Box style pill used to display platform ranks.
@@ -35,7 +28,6 @@ struct RankBadge: View {
         }
     }
 
-    // Heuristic strictly for getting the color based on the named rank.
     private var numericRatingForPlatformRank: Int {
         if platform == .leetcode { return .zero }
         switch rank.lowercased() {

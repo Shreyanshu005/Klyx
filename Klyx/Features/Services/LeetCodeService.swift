@@ -1,10 +1,3 @@
-//
-//  LeetCodeService.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import Foundation
 
 // MARK: - Protocol
@@ -92,7 +85,7 @@ final class LeetCodeService: LeetCodeServiceProtocol {
         var normalizedDict: [String: Int] = [:]
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
-        // LeetCode timestamps are returned as UTC midnights
+
         formatter.timeZone = TimeZone(secondsFromGMT: 0) 
 
         for (timestampStr, count) in dict {

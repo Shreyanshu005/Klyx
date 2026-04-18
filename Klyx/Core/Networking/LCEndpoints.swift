@@ -1,10 +1,3 @@
-//
-//  LCEndpoints.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import Foundation
 
 /// LeetCode API endpoints — uses their public GraphQL API.

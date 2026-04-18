@@ -1,10 +1,3 @@
-//
-//  SettingsView.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import SwiftUI
 import SwiftData
 
@@ -107,7 +100,7 @@ struct SettingsView: View {
                                 Spacer()
                                 Image(systemName: "rectangle.portrait.and.arrow.right")
                                     .foregroundStyle(.white)
-                                    .padding(.trailing, 12) // Added padding
+                                    .padding(.trailing, 12)
                             }
                             .padding(.vertical, 20)
                             .background(AppColors.boxRed, in: RoundedRectangle(cornerRadius: 20))
@@ -165,23 +158,21 @@ struct SettingsView: View {
     }
 
     private func performLogout() {
-        // 1. Delete SwiftData Profile
+
         if let profile = userProfile {
             modelContext.delete(profile)
             try? modelContext.save()
         }
 
-        // 2. Clear Keychain Tokens
         KeychainManager.shared.delete(forKey: KeychainManager.Keys.githubToken)
         KeychainManager.shared.delete(forKey: KeychainManager.Keys.leetcodeSession)
 
-        // 3. Flush Cache
         CacheManager.shared.remove(forKey: CacheManager.Keys.aggregatedStats)
         CacheManager.shared.remove(forKey: CacheManager.Keys.lcProfile)
         CacheManager.shared.remove(forKey: CacheManager.Keys.ghProfile)
         CacheManager.shared.remove(forKey: CacheManager.Keys.cfProfile)
         
-        // 4. Show Feedback
+
         showLogoutSuccess = true
     }
 }

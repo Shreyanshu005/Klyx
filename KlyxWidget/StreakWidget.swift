@@ -1,10 +1,3 @@
-//
-//  StreakWidget.swift
-//  KlyxWidget
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import WidgetKit
 import SwiftUI
 
@@ -98,7 +91,7 @@ struct StreakWidgetMediumView: View {
 
     var body: some View {
         HStack(spacing: 20) {
-            // Main Top Streak
+
             VStack(alignment: .leading, spacing: 0) {
                 Text("HOT STREAK")
                     .clash(size: 14, weight: .bold)

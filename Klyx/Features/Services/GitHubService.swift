@@ -1,10 +1,3 @@
-//
-//  GitHubService.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import Foundation
 
 // MARK: - Protocol
@@ -69,7 +62,7 @@ final class GitHubService: GitHubServiceProtocol {
         let days = calendar.weeks.flatMap { $0.contributionDays }
         let dict = Dictionary(uniqueKeysWithValues: days.map { ($0.date, $0.contributionCount) })
         
-        // 1. Longest Streak (anywhere in history)
+
         var longest = 0
         var temp = 0
         for day in days {
@@ -81,7 +74,7 @@ final class GitHubService: GitHubServiceProtocol {
             }
         }
         
-        // 2. Current Streak (anchored to today/yesterday)
+
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd"
         let today = formatter.string(from: Date())

@@ -1,10 +1,3 @@
-//
-//  RootView.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import SwiftUI
 import SwiftData
 
@@ -56,7 +49,7 @@ struct RootView: View {
             NavigationStack {
                 ScrollView {
                     VStack(spacing: 0) {
-                        // Massive Switcher
+
                         HStack(spacing: 12) {
                             competitiveTabButton(title: "LEETCODE", tab: .leetcode, color: AppColors.boxYellow)
                             competitiveTabButton(title: "CODEFORCES", tab: .codeforces, color: AppColors.boxBlue)
@@ -65,7 +58,6 @@ struct RootView: View {
                         .padding(.top, 8)
                         .padding(.bottom, 4)
 
-                        // Content
                         switch competitiveVM.selectedTab {
                         case .leetcode:
                             LeetCodeView(viewModel: competitiveVM)
@@ -122,7 +114,7 @@ struct RootView: View {
         .tint(AppColors.boxGreen)
         .preferredColorScheme(.dark)
         .onAppear {
-            // Show onboarding if no profile exists
+
             if profiles.isEmpty {
                 showOnboarding = true
             }

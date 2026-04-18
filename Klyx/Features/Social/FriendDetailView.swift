@@ -1,10 +1,3 @@
-//
-//  FriendDetailView.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import SwiftUI
 import SwiftData
 
@@ -133,7 +126,7 @@ struct FriendDetailView: View {
                             HStack {
                                 detailStat(val: "\(stats.cfContestsAttended)", title: "CONTESTS", color: .white.opacity(0.6))
                                 detailStat(val: "\(stats.cfProblemsSolved)", title: "SOLVED", color: .white.opacity(0.6))
-                                detailStat(val: "", title: "", color: .clear) // alignment spacer
+                                detailStat(val: "", title: "", color: .clear)
                             }
                         }
                     }

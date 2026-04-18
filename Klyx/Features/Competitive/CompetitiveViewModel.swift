@@ -1,10 +1,3 @@
-//
-//  CompetitiveViewModel.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import Foundation
 import Observation
 

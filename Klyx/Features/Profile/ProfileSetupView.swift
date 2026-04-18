@@ -1,10 +1,3 @@
-//
-//  ProfileSetupView.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import SwiftUI
 import SwiftData
 
@@ -159,7 +152,6 @@ struct ProfileSetupView: View {
             modelContext.insert(profile)
         }
 
-        // Save token to Keychain
         if !ghToken.isEmpty {
             KeychainManager.shared.save(ghToken, forKey: KeychainManager.Keys.githubToken)
         }

@@ -1,10 +1,3 @@
-//
-//  HeatmapWidget.swift
-//  KlyxWidget
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import WidgetKit
 import SwiftUI
 
@@ -68,7 +61,6 @@ struct HeatmapWidgetView: View {
             }
             .padding(.bottom, 12)
 
-            // GitHub standard 7-row vertical layout
             let targetRows = 7
             let targetCols = 20
             HStack(spacing: 3) {
@@ -77,7 +69,7 @@ struct HeatmapWidgetView: View {
                         ForEach(0..<targetRows, id: \.self) { row in
                             ZStack {
                                 RoundedRectangle(cornerRadius: 2)
-                                    .fill(Color(white: 0.05)) // Extremely dark gray/black for empty slots
+                                    .fill(Color(white: 0.05))
                                 
                                 RoundedRectangle(cornerRadius: 2)
                                     .fill(colorFor(col: col, row: row, maxCols: targetCols, maxRows: targetRows))
@@ -107,7 +99,7 @@ struct HeatmapWidgetView: View {
         let count = entry.calendar[dateString] ?? 0
         if count == 0 { return .clear }
         
-        // Vibrant Box Green for contrast on black background
+
         let vibrantGreen = AppColors.boxGreen
         
         if count < 3 { return vibrantGreen.opacity(0.3) }
@@ -127,6 +119,6 @@ struct HeatmapWidget: Widget {
         }
         .configurationDisplayName("Heatmap")
         .description("Your activity heatmap right on the home screen.")
-        .supportedFamilies([.systemMedium]) // Medium fits the grid best
+        .supportedFamilies([.systemMedium])
     }
 }

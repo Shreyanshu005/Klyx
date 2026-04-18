@@ -1,10 +1,3 @@
-//
-//  CFEndpoints.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import Foundation
 
 /// Codeforces API endpoints — uses their public REST API.

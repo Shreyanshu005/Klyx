@@ -1,10 +1,3 @@
-//
-//  SocialView.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import SwiftUI
 import SwiftData
 
@@ -21,7 +14,7 @@ struct SocialView: View {
 
                 ScrollView {
                     VStack(spacing: 12) {
-                        // Header Box
+
                         BentoCard(backgroundColor: AppColors.boxBlue, cornerRadius: 28) {
                             HStack {
                                 VStack(alignment: .leading, spacing: 0) {
@@ -77,7 +70,7 @@ struct SocialView: View {
                                 .padding(.vertical, 40)
                             }
                         } else {
-                            // Leaderboard Feed
+
                             ForEach(viewModel.leaderboard) { entry in
                                 NavigationLink(destination: FriendDetailView(friend: entry.alias, stats: entry.stats)) {
                                     BentoCard(backgroundColor: entry.rank == 1 ? AppColors.boxYellow : AppColors.cardBackground, cornerRadius: 28) {

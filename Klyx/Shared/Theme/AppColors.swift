@@ -1,10 +1,3 @@
-//
-//  AppColors.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import SwiftUI
 
 /// Centralized color palette for the entire app.
@@ -12,14 +5,14 @@ import SwiftUI
 enum AppColors {
     // MARK: - Box Box Flat Colors
     static let boxRed = Color(hex: "#F5191D")
-    static let textRedShade = Color(hex: "#FE7679") // Highlight matching red tone
+    static let textRedShade = Color(hex: "#FE7679")
     static let boxYellow = Color(hex: "#FFDA27")
     static let boxBlue = Color(hex: "#2F1FFD")
     static let boxGreen = Color(hex: "#02BB81")
     
     // MARK: - Background Colors
     static let pureBlack = Color(hex: "#000000")
-    static let cardBackground = Color(hex: "#101010")  // Very dark gray for neutral cards
+    static let cardBackground = Color(hex: "#101010")
     static let surfaceBackground = Color(hex: "#1A1A1A")
 
     // MARK: - Semantic

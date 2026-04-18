@@ -1,10 +1,3 @@
-//
-//  WeeklyProgressView.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import SwiftUI
 
 /// A brutalist horizontal row showing the current week's (last 7 days) progress for a platform.
@@ -19,7 +12,7 @@ struct WeeklyProgressView: View {
         let calendar = Calendar.current
         let today = Date.now.startOfDay
         
-        // Find the start of the current week (Sunday)
+
         let components = calendar.dateComponents([.yearForWeekOfYear, .weekOfYear], from: today)
         guard let startOfWeek = calendar.date(from: components) else { return [] }
         
@@ -56,11 +49,11 @@ struct WeeklyProgressView: View {
                 ForEach(Array(weeklyData.enumerated()), id: \.offset) { index, day in
                     VStack(spacing: 8) {
                         ZStack {
-                            // Empty box background (Dark Gray)
+
                             RoundedRectangle(cornerRadius: 10)
                                 .fill(Color.white.opacity(0.1))
                             
-                            // Filling color
+
                             if day.count > 0 {
                                 RoundedRectangle(cornerRadius: 10)
                                     .fill(color)

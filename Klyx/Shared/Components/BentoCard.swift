@@ -1,10 +1,3 @@
-//
-//  BentoCard.swift
-//  Klyx
-//
-//  Created by Shreyanshu on 17/04/26.
-//
-
 import SwiftUI
 
 /// A reusable futuristic glassmorphic container for dashboard widgets.
