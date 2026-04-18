@@ -8,8 +8,20 @@
 import Foundation
 import WidgetKit
 
-/// Aggregates data from all three platforms into a unified DevScore.
-/// Called after each sync to recompute the dashboard metrics.
+/// Orchestrates concurrent data fetching from all integrated platforms
+/// and computes the unified ``AggregatedStats``.
+///
+/// `ScoreCalculator` is the core aggregation engine of Klyx. It uses
+/// Swift `async let` to fetch data from LeetCode, GitHub, and Codeforces
+/// **simultaneously**, completing in the time of the slowest API response.
+///
+/// After computation, results are persisted to the shared App Group via
+/// ``CacheManager`` and a `WidgetCenter.reloadAllTimelines()` is triggered
+/// to push fresh data to all Home Screen widgets.
+///
+/// ## Dependencies
+/// All platform services are injected via protocols, enabling full
+/// mock-based unit testing without network access.
 final class ScoreCalculator {
     private let lcService: LeetCodeServiceProtocol
     private let ghService: GitHubServiceProtocol

@@ -8,7 +8,7 @@
 import Foundation
 import Observation
 
-/// Powers the main Dashboard tab — shows the unified DevScore,
+/// Powers the main Dashboard tab — shows the unified stats,
 /// platform summaries, and streak info at a glance.
 @Observable
 final class DashboardViewModel {
@@ -20,18 +20,15 @@ final class DashboardViewModel {
     private let scoreCalculator: ScoreCalculator
     private let cache: CacheManager
 
-    init(
-        lcService: LeetCodeServiceProtocol = LeetCodeService(),
-        ghService: GitHubServiceProtocol = GitHubService(),
-        cfService: CodeforcesServiceProtocol = CodeforcesService(),
-        cache: CacheManager = .shared
-    ) {
-        self.cache = cache
+    /// Initialize with a service container for centralized dependency injection.
+    /// - Parameter container: The DI container providing all platform services. Defaults to `.live`.
+    init(container: ServiceContainer = .live) {
+        self.cache = container.cache
         self.scoreCalculator = ScoreCalculator(
-            lcService: lcService,
-            ghService: ghService,
-            cfService: cfService,
-            cache: cache
+            lcService: container.leetcode,
+            ghService: container.github,
+            cfService: container.codeforces,
+            cache: container.cache
         )
 
         // Load cached stats immediately for instant UI
