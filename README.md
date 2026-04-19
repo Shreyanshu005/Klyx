@@ -241,7 +241,7 @@ Klyx/
 
 | Layer | Technology | Purpose |
 |:------|:-----------|:--------|
-| **UI** | SwiftUI (iOS 17+) | Declarative interface with custom animations |
+| **UI** | SwiftUI (iOS 18+) | Declarative interface with custom animations |
 | **State** | `@Observable` (Observation) | Reactive state management without Combine |
 | **Database** | SwiftData | Persistent user profiles and friend data |
 | **Networking** | `URLSession` + `async/await` | Concurrent REST and GraphQL requests |
